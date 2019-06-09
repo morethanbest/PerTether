@@ -64,7 +64,7 @@ async function run() {
                 winston.error('Blockchain started failed.');
                 return;
             }
-            await util.sleep(5000);
+            await util.sleep(20000);
             await setup.start(configObject);
             let nodeCount = configObject.nodes.length;
 
