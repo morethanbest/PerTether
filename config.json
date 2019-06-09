@@ -1,0 +1,7 @@
+{
+	"difficulty": ["0x0"],
+	"gasLimit": [4712388],
+	"nodeCount": 4,
+	"startUpType": "docker",
+	"clientType": "Geth"
+}

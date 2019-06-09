@@ -25,7 +25,6 @@ coverage/
 # We prefer to not use lock files
 package-lock.json
 result.json
-config.json
 
 # Ignore zookeeper files
 zookeeper.out
