@@ -39,6 +39,10 @@ async function run() {
     let difficulties = absConfigObject.difficulty;
     let gasLimits = absConfigObject.gasLimit;
     let clientType = absConfigObject.clientType;
+    let startRate = absConfigObject.startTps;
+    let finishRate = absConfigObject.finishTps;
+    let duration = absConfigObject.duration;
+    let smartContract = absConfigObject.smartContract;
 
     //start and stop docker
     winston.info('PerTether starts a new test task.');
@@ -66,10 +70,11 @@ async function run() {
 
             client.startClients(nodeCount);
 
-            let testConfig = configObject.tests;
-            let rate = testConfig.startRate;
-            let finishRate = testConfig.finishRate;
-            let duration = testConfig.duration;
+            // let testConfig = configObject.tests;
+            let rate = startRate;
+            // let rate = testConfig.startRate;
+            // let finishRate = testConfig.finishRate;
+            // let duration = testConfig.duration;
             let eachClientRate = rate / nodeCount;
             let finalResult = {
                 difficulty: difficulties[i],
@@ -83,7 +88,7 @@ async function run() {
             };
             while (eachClientRate <= finishRate / nodeCount) {
                 let results = [];
-                await client.startTest(configObject.nodes, account.getAccounts(), eachClientRate, duration, contract.getContractConfig('HelloWorld'), results);
+                await client.startTest(configObject.nodes, account.getAccounts(), eachClientRate, duration, contract.getContractConfig(smartContract), results);
                 let data = dataAnalysis.processResult(results);
                 winston.info(`Result rate ${eachClientRate * nodeCount} ${data}`);
                 finalResult.throughput.push(data.throughput);

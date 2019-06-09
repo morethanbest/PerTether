@@ -7,7 +7,7 @@ function processResult(result){
     let txSuccess = 0;
     let txTotal = 0;
     let latencyTotal = 0;
-    let rate = result[0].rate;
+    let rate = result[0].rate * result.length;
     let duration = result[0].duration;
     let durationMs = duration * 1000;
     let maxGasprice = 20;
@@ -37,12 +37,17 @@ function processResult(result){
         }
     }
     for (let i = 0; i < gasTotal.length; i++) {
-        gasLatency[i][2] = gasTotal[i][2] / gasTotal[i][0];
-        gasCompletion[i][2] = gasTotal[i][1] / gasTotal[i][0];
+        if(gasTotal[i][0] === 0){
+            gasLatency[i][2] = 0;
+            gasCompletion[i][2] = 0;
+        } else {
+            gasLatency[i][2] = gasTotal[i][2] / (gasTotal[i][0] * 1000);
+            gasCompletion[i][2] = gasTotal[i][1] / gasTotal[i][0];
+        }
     }
     winston.info(`Test rate ${rate}, duration ${duration}. Total tx ${txTotal}, success tx ${txSuccess}.`);
     let throughput = txSuccess / duration;
-    let latency = latencyTotal / txTotal;
+    let latency = latencyTotal / (txTotal * 1000);
     let txCompletion = txSuccess / txTotal;
     winston.info(`Throughput ${throughput}, latency ${latency}, txCompletion ${txCompletion}.`);
     return {

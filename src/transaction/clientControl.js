@@ -34,9 +34,6 @@ module.exports.startClients = function(count){
 };
 
 module.exports.startTest = async function startTest(nodeConfig, nodeAccounts, rate, duration, contractConfig, results) {
-    winston.info(JSON.stringify(nodeConfig));
-    winston.info(JSON.stringify(nodeAccounts));
-    winston.info(JSON.stringify(contractConfig));
     let promises = [];
     let i = 0;
     for(let id in processes) {

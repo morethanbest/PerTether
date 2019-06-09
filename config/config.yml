@@ -3,11 +3,11 @@ nodes:
     proxy: http://localhost:8545
   - nodeName: node1
     proxy: http://localhost:9545
+  - nodeName: node2
+    proxy: http://localhost:10545
+  - nodeName: node3
+    proxy: http://localhost:11545
 contracts:
   - name: HelloWorld
     path: config/contract/HelloWorld.sol
     workload: config/workload/HelloWorld.js
-tests:
-  duration: 60
-  startRate: 2
-  finishRate: 16

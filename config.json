@@ -1,7 +1,11 @@
 {
-	"difficulty": ["0x0", "0xffff"],
+	"difficulty": ["0x0", "0xfff"],
 	"gasLimit": [4712388, 2356194],
 	"nodeCount": 2,
 	"startUpType": "docker",
-	"clientType": "Geth"
+	"clientType": "Geth",
+    "startTps": 8,
+    "finishTps": 1024,
+    "duration": 60,
+    "smartContract": "HelloWorld"
 }

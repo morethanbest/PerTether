@@ -51,6 +51,40 @@ services:
     depends_on:
     - bootnode
 
+  node2:
+    container_name: node2
+    image: ethereum/client-go:alltools-v1.8.26
+    command: sh ./work/start_geth.sh
+    working_dir: /node2
+    volumes:
+    - ./tmp/node2/keystore:/node2/keystore
+    - ./tmp/node2/work:/node2/work
+    ports:
+    - 10545:8545
+    - 30305:30303
+    networks:
+      etherNet:
+        ipv4_address: 172.19.0.4
+    depends_on:
+    - bootnode
+
+  node3:
+    container_name: node3
+    image: ethereum/client-go:alltools-v1.8.26
+    command: sh ./work/start_geth.sh
+    working_dir: /node3
+    volumes:
+    - ./tmp/node3/keystore:/node3/keystore
+    - ./tmp/node3/work:/node3/work
+    ports:
+    - 11545:8545
+    - 30306:30303
+    networks:
+      etherNet:
+        ipv4_address: 172.19.0.5
+    depends_on:
+    - bootnode
+
 networks:
   etherNet:
     ipam:
