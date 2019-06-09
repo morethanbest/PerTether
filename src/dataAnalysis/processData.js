@@ -25,12 +25,12 @@ function processResult(result){
         winston.info(`Result ${JSON.stringify(res)}`);
         for(let j = 0; j < res.length; j++){
             txTotal ++;
-            latencyTotal += res[j].latency;
             let gasBucket = parseInt(res[j].gasprice / 2);
             if (gasBucket > maxGasprice / 2) gasBucket = maxGasprice / 2;
             gasTotal[gasBucket][0]++;
-            gasTotal[gasBucket][2] += res[j].latency;
             if(res[j].status === 0 && res[j].finishTime - res[0].finishTime < durationMs) {
+                gasTotal[gasBucket][2] += res[j].latency;
+                latencyTotal += res[j].latency;
                 txSuccess++;
                 gasTotal[gasBucket][1]++;
             }
@@ -41,13 +41,13 @@ function processResult(result){
             gasLatency[i][2] = 0;
             gasCompletion[i][2] = 0;
         } else {
-            gasLatency[i][2] = gasTotal[i][2] / (gasTotal[i][0] * 1000);
+            gasLatency[i][2] = gasTotal[i][2] / (gasTotal[i][1] * 1000);
             gasCompletion[i][2] = gasTotal[i][1] / gasTotal[i][0];
         }
     }
     winston.info(`Test rate ${rate}, duration ${duration}. Total tx ${txTotal}, success tx ${txSuccess}.`);
     let throughput = txSuccess / duration;
-    let latency = latencyTotal / (txTotal * 1000);
+    let latency = latencyTotal / (txSuccess * 1000);
     let txCompletion = txSuccess / txTotal;
     winston.info(`Throughput ${throughput}, latency ${latency}, txCompletion ${txCompletion}.`);
     return {

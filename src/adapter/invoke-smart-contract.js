@@ -14,7 +14,7 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         latency: -1
     };
     let data = web3.eth.abi.encodeFunctionCall(abi, args);
-    return await web3.eth.sendTransaction({
+    let send = web3.eth.sendTransaction({
         from: account,
         gasPrice: parseInt(gasprice * 1000000000).toString(),
         gas: '200000',
@@ -33,7 +33,14 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         result.latency = result.finishTime - result.startTime;
         return Promise.resolve(result);
     });
-
+    let timeout = new Promise(function(resolve, reject){        //做一些异步操作
+        setTimeout(function(){
+            result.finishTime = Date.now();
+            result.latency = result.finishTime - result.startTime;
+            resolve(result);
+        }, 100000);
+    });
+    return await Promise.race([send, timeout]);
 };
 
 module.exports.submitQuery = async function(context, contractID, args){
