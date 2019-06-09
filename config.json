@@ -4,8 +4,8 @@
 	"nodeCount": 2,
 	"startUpType": "docker",
 	"clientType": "Geth",
-    "startTps": 8,
-    "finishTps": 1024,
+    "startTps": 4,
+    "finishTps": 512,
     "duration": 60,
     "smartContract": "HelloWorld"
 }

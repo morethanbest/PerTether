@@ -25,16 +25,17 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         result.status = 0;
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
-        winston.info(`${nodeName}: ${JSON.stringify(receipt)}`);
+        winston.info(`${nodeName}: TX confirmed block hash ${receipt.blockHash}`);
         return Promise.resolve(result);
     }, function (error) {
-        winston.info(`${nodeName}: ${JSON.stringify(error)}`);
+        winston.info(`${nodeName}: TX error ${JSON.stringify(error)}`);
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
         return Promise.resolve(result);
     });
-    let timeout = new Promise(function(resolve, reject){        //做一些异步操作
+    let timeout = new Promise(function(resolve, reject){
         setTimeout(function(){
+            winston.info(`${nodeName}: TX timeout!`);
             result.finishTime = Date.now();
             result.latency = result.finishTime - result.startTime;
             resolve(result);

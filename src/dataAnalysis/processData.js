@@ -22,7 +22,6 @@ function processResult(result){
     for(let i = 0; i < result.length; i++){
         winston.info(`Process ${result[i].node}`);
         let res = result[i].result;
-        winston.info(`Result ${JSON.stringify(res)}`);
         for(let j = 0; j < res.length; j++){
             txTotal ++;
             let gasBucket = parseInt(res[j].gasprice / 2);

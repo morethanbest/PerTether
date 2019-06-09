@@ -56,6 +56,7 @@ async function run() {
         clientType: clientType,
         result: []
     };
+    let chainCount = 0;
     for (let i = 0; i < difficulties.length; i++) {
         for (let j = 0; j < gasLimits.length; j++) {
             setup.writeGenesis(clientType, difficulties[i], gasLimits[j], configObject.nodes.length);
@@ -99,12 +100,13 @@ async function run() {
                 eachClientRate *= 2;
             }
             client.stop();
-            winston.info(`##########Round Final Result##########`);
-            winston.info(finalResult);
             tFinalResult.result.push(finalResult);
             let stopStatus = await setup.stopTestChain(clientType);
             if (stopStatus !== 0)
                 winston.error('Docker stopped failed. Please stop manually.');
+            let finalResultStr = JSON.stringify(finalResult);
+            fs1.writeFileSync(`report${chainCount}.json`, finalResultStr);
+            chainCount ++;
         }
     }
     winston.info(`##########True Final Result##########`);
