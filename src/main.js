@@ -44,6 +44,21 @@ async function run() {
     let duration = absConfigObject.duration;
     let smartContract = absConfigObject.smartContract;
 
+    let configNodeCount = absConfigObject.nodeCount;
+    let minerCount = absConfigObject.minerCount;
+    if (configNodeCount < minerCount * 2){
+        winston.error('Node count should not less than double time miner count.');
+        return;
+    }
+    if(minerCount === 'undefined')
+        minerCount = 1;
+    for (let i = 0; i < configNodeCount; i++) {
+        fs1.copyFileSync('config/geth/start_geth_common.sh', `src/setup/geth/docker/tmp/node${i}/work/start_geth.sh`);
+    }
+    for (let i = 0; i < minerCount; i++) {
+        fs1.copyFileSync('config/geth/start_geth_miner.sh', `src/setup/geth/docker/tmp/node${i*2}/work/start_geth.sh`);
+    }
+
     //start and stop docker
     winston.info('PerTether starts a new test task.');
     let configObject = util.parseYaml('config/config.yml');

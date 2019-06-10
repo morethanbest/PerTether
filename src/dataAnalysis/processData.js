@@ -39,6 +39,8 @@ function processResult(result){
         if(gasTotal[i][0] === 0){
             gasLatency[i][2] = 0;
             gasCompletion[i][2] = 0;
+        } else if(gasTotal[i][1] === 0){
+            gasLatency[i][2] = 0;
         } else {
             gasLatency[i][2] = gasTotal[i][2] / (gasTotal[i][1] * 1000);
             gasCompletion[i][2] = gasTotal[i][1] / gasTotal[i][0];

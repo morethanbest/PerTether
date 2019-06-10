@@ -44,7 +44,7 @@ module.exports.run = async function (node, contractPath, contractName) {
             });
         });
 
-        finalInstance = await Promise.race([contractInstance, new Promise((resolve, reject) => setTimeout(reject, 600000))]).then(function (newContractInstance) {
+        finalInstance = await Promise.race([contractInstance, new Promise((resolve, reject) => setTimeout(reject, 1200000))]).then(function (newContractInstance) {
             isFailed = false;
             return Promise.resolve(newContractInstance);
         }).catch(function () {
