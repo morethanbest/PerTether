@@ -7,6 +7,7 @@ const solc = require('solc');
 const fs = require ('fs');
 const accountUtil = require('../util/account');
 const providers = require('../util/providers');
+const util = require('../util/util');
 
 module.exports.run = async function (node, contractPath, contractName) {
     // web3sync.setWeb3(config.proxy);
@@ -26,13 +27,16 @@ module.exports.run = async function (node, contractPath, contractName) {
     let jsonABI = JSON.parse(abi);
     const contractStructure = web3.eth.Contract(jsonABI);
     winston.info(`Deploying smart contract ${contractName} ...`);
-    let contractInstance = await contractStructure.deploy({
-        data: '0x' + bytecode
-    }).send({
-        from: accountAddress,
-        gas: 1500000,
-        gasPrice: '20000000000'
-    }).then((newContractInstance) => {
+    let isFailed = true;
+    let finalInstance;
+    while (isFailed)  {
+        let contractInstance = contractStructure.deploy({
+            data: '0x' + bytecode
+        }).send({
+            from: accountAddress,
+            gas: 1500000,
+            gasPrice: '20000000000'
+        }).then((newContractInstance) => {
             winston.info(newContractInstance.options.address); // instance with the new contract address
             return Promise.resolve({
                 address: newContractInstance.options.address,
@@ -40,7 +44,16 @@ module.exports.run = async function (node, contractPath, contractName) {
             });
         });
 
+        finalInstance = await Promise.race([contractInstance, new Promise((resolve, reject) => setTimeout(reject, 600000))]).then(function (newContractInstance) {
+            isFailed = false;
+            return Promise.resolve(newContractInstance);
+        }).catch(function () {
+            winston.error(`Install smart contract timeout! Retry...`);
+        });
+    }
+
+    winston.info(`Install success: ${JSON.stringify(finalInstance)}`);
     winston.info('======================');
-    return contractInstance;
+    return finalInstance;
 
 };

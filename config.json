@@ -5,7 +5,7 @@
 	"startUpType": "docker",
 	"clientType": "Geth",
     "startTps": 4,
-    "finishTps": 512,
+    "finishTps": 256,
     "duration": 60,
     "smartContract": "HelloWorld"
 }

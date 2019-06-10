@@ -14,6 +14,7 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         latency: -1
     };
     let data = web3.eth.abi.encodeFunctionCall(abi, args);
+    let isTimeout = false;
     let send = web3.eth.sendTransaction({
         from: account,
         gasPrice: parseInt(gasprice * 1000000000).toString(),
@@ -22,12 +23,14 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         value: "100000000000000000",
         data: data
     }).then(function (receipt) {
+        isTimeout = false;
         result.status = 0;
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
         winston.info(`${nodeName}: TX confirmed block hash ${receipt.blockHash}`);
         return Promise.resolve(result);
     }, function (error) {
+        isTimeout = false;
         winston.info(`${nodeName}: TX error ${JSON.stringify(error)}`);
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
@@ -35,11 +38,13 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
     });
     let timeout = new Promise(function(resolve, reject){
         setTimeout(function(){
-            winston.info(`${nodeName}: TX timeout!`);
-            result.finishTime = Date.now();
-            result.latency = result.finishTime - result.startTime;
-            resolve(result);
-        }, 100000);
+            if(isTimeout) {
+                winston.info(`${nodeName}: TX timeout!`);
+                result.finishTime = Date.now();
+                result.latency = result.finishTime - result.startTime;
+                resolve(result);
+            }
+        }, 150000);
     });
     return await Promise.race([send, timeout]);
 };
