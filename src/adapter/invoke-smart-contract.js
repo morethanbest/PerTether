@@ -14,7 +14,7 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         latency: -1
     };
     let data = web3.eth.abi.encodeFunctionCall(abi, args);
-    let isTimeout = false;
+    let isTimeout = true;
     let send = web3.eth.sendTransaction({
         from: account,
         gasPrice: parseInt(gasprice * 1000000000).toString(),
