@@ -1,5 +1,5 @@
 {
-	"difficulty": ["0x0", "0xfff"],
+	"difficulty": ["0x2ffffd"],
 	"gasLimit": [4712388, 2356194],
 	"nodeCount": 2,
 	"startUpType": "docker",
