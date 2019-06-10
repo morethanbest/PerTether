@@ -72,8 +72,8 @@ async function run() {
         result: []
     };
     let chainCount = 0;
-    for (let i = 0; i < difficulties.length; i++) {
-        for (let j = 0; j < gasLimits.length; j++) {
+    for (let j = 0; j < gasLimits.length; j++) {
+        for (let i = 0; i < difficulties.length; i++) {
             setup.writeGenesis(clientType, difficulties[i], gasLimits[j], configObject.nodes.length);
             let startStatus = await setup.startTestChain(clientType);
             if (startStatus !== 0) {
