@@ -96,7 +96,7 @@ async function run() {
                 difficulty: difficulties[i],
                 gasLimit: gasLimits[j],
                 throughput: [],
-                latency:[],
+                generalLatency:[],
                 txCompeltion: [],
                 // gasCompletion: [],
                 detailedLatency: []
