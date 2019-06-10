@@ -108,7 +108,7 @@ async function run() {
                 let data = dataAnalysis.processResult(results);
                 winston.info(`Result rate ${eachClientRate * nodeCount} ${data}`);
                 finalResult.throughput.push(data.throughput);
-                finalResult.latency.push(data.latency);
+                finalResult.generalLatency.push(data.latency);
                 finalResult.txCompeltion.push(data.gasCompletion);
                 // finalResult.gasCompletion.push(data.gasCompletion);
                 finalResult.detailedLatency.push(data.gasLatency);
