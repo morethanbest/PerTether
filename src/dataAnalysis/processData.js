@@ -48,7 +48,9 @@ function processResult(result){
     }
     winston.info(`Test rate ${rate}, duration ${duration}. Total tx ${txTotal}, success tx ${txSuccess}.`);
     let throughput = txSuccess / duration;
-    let latency = latencyTotal / (txSuccess * 1000);
+    let latency = 0;
+    if(txSuccess !== 0)
+        latency = latencyTotal / (txSuccess * 1000);
     let txCompletion = txSuccess / txTotal;
     winston.info(`Throughput ${throughput}, latency ${latency}, txCompletion ${txCompletion}.`);
     return {

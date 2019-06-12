@@ -12,18 +12,28 @@ const path = require('path');
 const fs1 = require('fs');
 
 let configFile;
+let resultPath;
 
 function setConfig(file) {
     configFile = file;
 }
+function setResultPath(rPath) {
+    resultPath = rPath;
+}
 
-async function run() {
+async function main(){
     let program = require('commander');
     program.version('0.1')
-        .option('-c, --config <file>', 'config file of the benchmark, default is config.json', setConfig)
+        .option('-c, --config <file>', 'config file of PerTether, default is config.json', setConfig)
+        .option('-p, --path <rPath>', 'result path of PerTether, default is ./', setResultPath)
         .parse(process.argv);
+    await run(configFile, resultPath);
+}
+
+async function run(configFile, resultPath) {
     const fs = require('fs-extra');
     let absConfigFile;
+    let absResultPath;
     if(typeof configFile === 'undefined') {
         absConfigFile = path.join(__dirname, '..', 'config.json');
     }
@@ -35,7 +45,13 @@ async function run() {
         return;
     }
     let absConfigObject = require(absConfigFile);
-    winston.info(absConfigObject);
+    if(typeof resultPath === 'undefined') {
+        absResultPath = path.join(__dirname, '..');
+    }
+    else {
+        absResultPath = path.isAbsolute(resultPath) ? resultPath : path.join(__dirname, '..', resultPath);
+    }
+    // winston.info(fs1.readFileSync(path.join(absResultPath, 'report01.json')).toString());
     let difficulties = absConfigObject.difficulty;
     let gasLimits = absConfigObject.gasLimit;
     let clientType = absConfigObject.clientType;
@@ -93,6 +109,7 @@ async function run() {
             // let duration = testConfig.duration;
             let eachClientRate = rate / nodeCount;
             let finalResult = {
+                timestamp: 0,
                 difficulty: difficulties[i],
                 gasLimit: gasLimits[j],
                 throughput: [],
@@ -115,12 +132,13 @@ async function run() {
                 eachClientRate *= 2;
             }
             client.stop();
+            finalResult.timestamp = Math.floor(Date.now()/1000);
             tFinalResult.result.push(finalResult);
             let stopStatus = await setup.stopTestChain(clientType);
             if (stopStatus !== 0)
                 winston.error('Docker stopped failed. Please stop manually.');
             let finalResultStr = JSON.stringify(finalResult);
-            fs1.writeFileSync(`report${chainCount}.json`, finalResultStr);
+            fs1.writeFileSync(path.join(resultPath, `report${chainCount}.json`), finalResultStr);
             chainCount ++;
         }
     }
@@ -133,7 +151,7 @@ async function run() {
 
 (async () => {
     try {
-        await run();
+        await main();
     } catch (err) {
         winston.error(`Error while executing the task: ${err.stack ? err.stack : err}`);
     }

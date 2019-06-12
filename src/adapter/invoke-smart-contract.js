@@ -27,11 +27,11 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         result.status = 0;
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
-        winston.info(`${nodeName}: TX confirmed block hash ${receipt.blockHash}`);
+        winston.debug(`${nodeName}: TX confirmed block hash ${receipt.blockHash}`);
         return Promise.resolve(result);
     }, function (error) {
         isTimeout = false;
-        winston.info(`${nodeName}: TX error ${JSON.stringify(error)}`);
+        winston.debug(`${nodeName}: TX error ${JSON.stringify(error)}`);
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
         return Promise.resolve(result);
@@ -39,7 +39,7 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
     let timeout = new Promise(function(resolve, reject){
         setTimeout(function(){
             if(isTimeout) {
-                winston.info(`${nodeName}: TX timeout!`);
+                winston.debug(`${nodeName}: TX timeout!`);
                 result.finishTime = Date.now();
                 result.latency = result.finishTime - result.startTime;
                 resolve(result);

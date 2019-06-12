@@ -26,8 +26,6 @@
     "mustache": "^2.3.0",
     "nconf": "^0.10.0",
     "nconf-yaml": "^1.0.2",
-    "ora": "^1.2.0",
-    "pidusage": "^1.1.6",
     "ps-node": "^0.1.6",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",
