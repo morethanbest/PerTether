@@ -1,1 +1,1 @@
-{"difficulty": ["4095"], "gasLimit": ["4712388"], "nodeCount": 4, "startUpType": "docker", "clientType": "Geth", "minerCount": 2}
+{"difficulty": ["0x123456", "0xfffff"], "gasLimit": ["21000"], "nodeCount": 4, "startUpType": "docker", "clientType": "client", "minerCount": 1}

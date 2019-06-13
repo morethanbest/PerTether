@@ -11,8 +11,7 @@ import os
 import zipstream
 import pandas as pd
 import time
-import subprocess
-import execjs
+import threading
 class ZipUtilities:
     zip_file = None
 
@@ -39,44 +38,8 @@ class ZipUtilities:
 
 # 将请求定位到index.html文件中
 def experiment(request):
-    # difficulty = [];
-    # gaslimit = [];
-    # start_type = "";
-    # client_type = "";
-    # nodeCount = 0;
-    # if request.method == "POST":
-    #     difficulty1 = request.POST.get("Difficulty1", None)
-    #     difficulty2 = request.POST.get("Difficulty2", None)
-    #     difficulty3 = request.POST.get("Difficulty3", None)
-    #     if difficulty1 !="":
-    #         difficulty.append(difficulty1)
-    #     if difficulty2 !="":
-    #         difficulty.append(difficulty2)
-    #     if difficulty3 !="":
-    #         difficulty.append(difficulty3)
-    #     gaslimit1 = request.POST.get("gaslimit1", None)
-    #     gaslimit2 = request.POST.get("gaslimit2", None)
-    #     gaslimit3 = request.POST.get("gaslimit3", None)
-    #     if gaslimit1 !="":
-    #         gaslimit.append(gaslimit1)
-    #     if gaslimit2 !="":
-    #         gaslimit.append(gaslimit2)
-    #     if gaslimit3 !="":
-    #         gaslimit.append(gaslimit3)
-    #     start_type = request.POST.get("start_type", None)
-    #     client_type = request.POST.get("client_type", None)
-    #     nodeCount = int(request.POST.get("node_count", None))
-    # if(len(difficulty)!=0):
-    #     data = {}
-    #     data['difficulty'] = difficulty;
-    #     data['gasLimit'] = gaslimit;
-    #     data['nodeCount'] = nodeCount;
-    #     data['startUpType'] = start_type;
-    #     data['clientType'] = client_type;
-    #     file = open('static/json/config0.json', 'w', encoding='utf-8')
-    #     json.dump(data, file, ensure_ascii=False)
-    #     file.close()
     return render(request, 'experiment_py.html')
+
 def testConfig(request):
     startTps = 0
     finishTps = 0
@@ -107,15 +70,16 @@ def testConfig(request):
             i = i + 1
             start = start * 2
         labelArr[-1]=str(labelArr[-1])+'times'
-        os.chdir('..')
-        result = subprocess.run(['which', 'node'],
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE)
-        nodeCmd = result.stdout.decode("utf-8").replace('\n', '')
-        pnode = subprocess.Popen([nodeCmd, 'src/main.js', '-p', 'gui/static/json/', '-c', 'gui/static/json/config.json' ],
-                            stdout=subprocess.PIPE,
-                            stderr=subprocess.PIPE)
-        os.chdir('gui')
+        # os.chdir('..')
+        # result = subprocess.run(['which', 'node'],
+        #                         stdout=subprocess.PIPE,
+        #                         stderr=subprocess.PIPE)
+        # nodeCmd = result.stdout.decode("utf-8").replace('\n', '')
+        # pnode = subprocess.Popen(
+        #     [nodeCmd, 'src/main.js', '-p', 'gui/static/json/', '-c', 'gui/static/json/config.json'],
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.PIPE)
+        # os.chdir('gui')
     return render(request,'testConfig_py.html',{"labelArr":labelArr,"numArr":numArr})
 def throughput(request):
     with open("static/json/config.json", 'r') as load_f:
@@ -257,8 +221,6 @@ def detailedLatency(request):
             throughputAll.append(throughput)
             maxAll.append(maxvalues)
             timestampAll.append('')
-    # print(throughputAll)
-    # print(valueAll)
     return render(request, 'list_detailedLatency_py.html',{"existsArr":exists,"difficulty":difficulty,"gaslimit":gaslimit,"labelAll":labelAll,"valueAll":valueAll,"throughputAll":throughputAll,"maxAll":maxAll,"timestampAll":timestampAll})
 def txCompletion(request):
     with open("static/json/config.json", 'r') as load_f:
@@ -375,16 +337,9 @@ def del_file(path):
         else:
             del_file(path_file)
 def load(request):
-    # file = open('static/json/config0.json', 'rb')
-    # response = HttpResponse(file)
-    # response['Content-Type'] = 'application/octet-stream'  # 设置头信息，告诉浏览器这是个文件
-    # response['Content-Disposition'] = 'attachment;filename="models.py"'
-    # return response
-    # return render(request, 'download.html')
     utilities = ZipUtilities()
     path_to="static/download"
     files=os.listdir(path_to)
-    # files=['throughput_report0.jpg','throughput_report1.jpg']
     str=files[0]
     position=str.find('_')
     nameZip=str[0:position]
@@ -401,9 +356,6 @@ def download(request):
         urls = request.POST.get("urls", None)
         name=request.POST.get("name", None)
         urls=json.loads(urls)
-        # print(urls)
-        # print(type(urls))
-        # print(len(urls))
         for i in range(len(urls)):
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0;WOW64;rv:64.0) Gecko/20100101 Firefox/64.0'}
             req = urllib.request.Request(url=urls[i], headers=headers)
