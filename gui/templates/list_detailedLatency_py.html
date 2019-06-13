@@ -38,7 +38,7 @@
             if (existsArr[i]=="T" ){
                 $("#infotr" + i + "").append("<td ><button  class='btn btn-accent' style='width:100px;background:#228b22;border-color:#228b22;'>Tested</button></td>");
             }
-            else if(existsArr[i-1]=="T" && existsArr[i]=="F" ){
+            else if((existsArr[i-1]=="T" && existsArr[i]=="F" )||(i==0 &&existsArr[i]=="F")){
                 $("#infotr" + i + "").append("<td ><button  class='btn btn-accent' style='width:100px;'>Testing</button></td>");
             }
             else{
@@ -142,7 +142,7 @@
                         imgurls.push(chart.toDataURL()) ;
                     }
                     else {
-                        {#$("#sec" + i + "").append("<td><div style=' top: 0; bottom: 0; left: 0; right: 0;'>to be tested</div></td>");#}
+
                         $("#sec" + i + "").append("<td><div id='canvasDiv" + (i * n + j) + "'style='display:inline;'></div></td>");
                     var data = [
                         {
@@ -326,11 +326,7 @@
                     </table>
               </div>
               </div>
-{#            <div class="col-lg-12">#}
-{#                  <a href="javascript: void(0);" title="download chart" target="_blank" download="chart.png" id="download_a">#}
-{#                      <button type='button' id='download' class='btn btn-accent'>Download</button>#}
-{#                  </a>#}
-{#            </div>#}
+
             </div>
             <!-- End Default Light Table -->
           </div>

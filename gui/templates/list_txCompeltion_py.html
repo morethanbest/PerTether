@@ -38,7 +38,7 @@
             if (existsArr[i]=="T" ){
                 $("#infotr" + i + "").append("<td ><button  class='btn btn-accent' style='width:100px;background:#228b22;border-color:#228b22;'>Tested</button></td>");
             }
-            else if(existsArr[i-1]=="T" && existsArr[i]=="F" ){
+            else if((existsArr[i-1]=="T" && existsArr[i]=="F" )||(i==0 &&existsArr[i]=="F")){
                 $("#infotr" + i + "").append("<td ><button  class='btn btn-accent' style='width:100px;'>Testing</button></td>");
             }
             else{
@@ -325,11 +325,7 @@
                     </table>
               </div>
               </div>
-{#            <div class="col-lg-12">#}
-{#                  <a href="javascript: void(0);" title="download chart" target="_blank" download="chart.png" id="download_a">#}
-{#                      <button type='button' id='download' class='btn btn-accent'>Download</button>#}
-{#                  </a>#}
-{#            </div>#}
+
 
             <!-- End Default Light Table -->
           </div>

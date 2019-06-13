@@ -38,7 +38,7 @@
             if (existsArr[i]=="T" ){
                 $("#infotr" + i + "").append("<td ><button  class='btn btn-accent' style='width:100px;background:#228b22;border-color:#228b22;'>Tested</button></td>");
             }
-            else if(existsArr[i-1]=="T" && existsArr[i]=="F" ){
+            else if((existsArr[i-1]=="T" && existsArr[i]=="F" )||(i==0 &&existsArr[i]=="F")){
                 $("#infotr" + i + "").append("<td ><button  class='btn btn-accent' style='width:100px;'>Testing</button></td>");
             }
             else{
@@ -46,16 +46,8 @@
             }
             $("#infotr" + i + "").append("<td >"+timeAll[i]+"</td>");
         }
-    	{#$("table").append("<tr id='head'></tr>");#}
-    	{#$('#head').append("<td></td>");#}
-    	{#$('#head').append("<td colspan="+n+">Difficulty</td>");#}
-    	{#$("table").append("<tr id='sec'></tr>");#}
-    	{#$('#sec').append("<td>Block GasLimit</td>");#}
-    	{#for(var i=0;i<n;i++){#}
-    	{#	$('#sec').append("<td>"+difficulty[i]+"</td>");}#}
         for(var i=0;i<m;i++) {
             $("#pic").append("<tr id='sec" + i + "'></tr>");
-            {#$("#sec" + i + "").append("<td>" + blockGasLimit[i] + "</td>");#}
             for (var j = 0; j < n; j++) {
                 if (existsArr[i * n + j] == "T") {
                     $("#sec" + i + "").append("<td><div id='canvasDiv" + (i * n + j) + "'style='display:inline;'></div></td>");
@@ -214,20 +206,7 @@
 
                             })
         });
-        {#var download = document.getElementById("download");#}
-        {#        var a_ = document.getElementById("download_a");#}
-        {#        i=0;#}
-        {#        $("#download").click(function(e) {#}
-        {#            if (iChart.isChrome) {#}
-        {#                a_.href = IMAGE_DATA;#}
-        {#                console.log(IMAGE_DATA);#}
-        {#                i=1;#}
-        {#            }#}
-        {#        });#}
-        {#        if(i==1){#}
-        {#             $("#download").trigger("click"); //jquery 模拟执行一次点击行为#}
-        {#            i=0;#}
-        {#        }#}
+
     		});
 
     </script>
@@ -335,11 +314,7 @@
               </div>
               </div>
 
-{#              <div class="col-lg-12">#}
-{#                  <a href="javascript: void(0);" title="download chart" target="_blank" download="chart.png" id="download_a">#}
-{#                      <button type='button' id='download' class='btn btn-accent'>Download</button>#}
-{#                  </a>#}
-{#            </div>#}
+
             <!-- End Default Light Table -->
           </div>
            <script type="text/javascript">

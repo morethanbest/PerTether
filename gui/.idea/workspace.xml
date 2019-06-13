@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="44841f68-f9eb-4fa7-ad52-5bcff55b5080" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontApp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/frontApp/views.py" afterDir="false" />
-    </list>
+    <list default="true" id="44841f68-f9eb-4fa7-ad52-5bcff55b5080" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,26 +148,34 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="1763504183">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/list_detailedLatency_py.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
+            <state relative-caret-position="78">
               <caret line="328" lean-forward="true" selection-start-line="328" selection-end-line="328" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontApp/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="116">
               <caret line="72" column="7" selection-start-line="72" selection-start-column="7" selection-end-line="81" selection-end-column="25" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
-                <marker date="1560393449402" expanded="true" signature="1270:1271" ph="..." />
+                <marker date="1560396490947" expanded="true" signature="1270:1271" ph="..." />
               </folding>
             </state>
           </provider>
@@ -179,8 +184,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/list_throughput_py.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6042">
-              <caret line="318" selection-start-line="318" selection-end-line="318" />
+            <state relative-caret-position="111">
+              <caret line="316" lean-forward="true" selection-start-line="316" selection-end-line="316" />
             </state>
           </provider>
         </entry>
@@ -188,8 +193,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/list_txCompeltion_py.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-145">
-              <caret line="307" column="73" selection-start-line="307" selection-start-column="73" selection-end-line="307" selection-end-column="73" />
+            <state relative-caret-position="192">
+              <caret line="327" lean-forward="true" selection-start-line="327" selection-end-line="327" />
             </state>
           </provider>
         </entry>
@@ -197,8 +202,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/list_latency_py.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5985">
-              <caret line="315" column="20" selection-start-line="315" selection-start-column="20" selection-end-line="315" selection-end-column="20" />
+            <state relative-caret-position="99">
+              <caret line="314" lean-forward="true" selection-start-line="314" selection-end-line="314" />
             </state>
           </provider>
         </entry>
@@ -214,7 +219,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -241,11 +246,11 @@
         <option value="$PROJECT_DIR$/static/json/report01.json" />
         <option value="$PROJECT_DIR$/static/json/report0.json" />
         <option value="$PROJECT_DIR$/static/json/report1.json" />
-        <option value="$PROJECT_DIR$/templates/list_throughput_py.html" />
-        <option value="$PROJECT_DIR$/templates/list_txCompeltion_py.html" />
-        <option value="$PROJECT_DIR$/templates/list_latency_py.html" />
-        <option value="$PROJECT_DIR$/templates/list_detailedLatency_py.html" />
         <option value="$PROJECT_DIR$/frontApp/views.py" />
+        <option value="$PROJECT_DIR$/templates/list_throughput_py.html" />
+        <option value="$PROJECT_DIR$/templates/list_latency_py.html" />
+        <option value="$PROJECT_DIR$/templates/list_txCompeltion_py.html" />
+        <option value="$PROJECT_DIR$/templates/list_detailedLatency_py.html" />
       </list>
     </option>
   </component>
@@ -267,6 +272,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -283,7 +289,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -468,7 +473,7 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18755053" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19078416" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -546,39 +551,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/json/report03.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3116">
-          <caret line="164" column="5" selection-start-line="164" selection-start-column="5" selection-end-line="164" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/json/report02.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="20" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/json/test.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/static/json/report03.json" />
+    <entry file="file://$PROJECT_DIR$/static/json/report02.json" />
+    <entry file="file://$PROJECT_DIR$/static/json/test.json" />
     <entry file="file://$PROJECT_DIR$/templates/list_txCompeltion.html" />
     <entry file="file://$PROJECT_DIR$/templates/list_latency.html" />
-    <entry file="file://$PROJECT_DIR$/static/json/report.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="8" selection-start-line="8" selection-end-line="20" selection-end-column="261" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/json/report_2.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="26" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/static/json/report.json" />
+    <entry file="file://$PROJECT_DIR$/static/json/report_2.json" />
     <entry file="file://$PROJECT_DIR$/front/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
@@ -617,13 +596,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/download/throughput_report1.jpg" />
     <entry file="file://$PROJECT_DIR$/templates/list_detailedLatency.html" />
-    <entry file="file://$PROJECT_DIR$/static/json/report01.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="22" column="14" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/static/json/report01.json" />
     <entry file="file://$PROJECT_DIR$/static/json/report0.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -655,75 +628,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo-danger.svg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo-info.svg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo-secondary.svg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo-success.svg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo-warning.svg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/avatars/0.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/avatars/1.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/avatars/2.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/avatars/3.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo-danger.svg" />
+    <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo-info.svg" />
+    <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo-secondary.svg" />
+    <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo-success.svg" />
+    <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo-warning.svg" />
+    <entry file="file://$PROJECT_DIR$/static/images/avatars/0.jpg" />
+    <entry file="file://$PROJECT_DIR$/static/images/avatars/1.jpg" />
+    <entry file="file://$PROJECT_DIR$/static/images/avatars/2.jpg" />
+    <entry file="file://$PROJECT_DIR$/static/images/avatars/3.jpg" />
     <entry file="file://$PROJECT_DIR$/static/images/shards-dashboards-logo.svg">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/static/images/avatars/experiment.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/content-management/1.jpeg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/images/content-management/16.jpeg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/static/images/content-management/1.jpeg" />
+    <entry file="file://$PROJECT_DIR$/static/images/content-management/16.jpeg" />
     <entry file="file://$PROJECT_DIR$/static/images/avatars/file.png">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_throughput_py.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6042">
-          <caret line="318" selection-start-line="318" selection-end-line="318" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_txCompeltion_py.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-145">
-          <caret line="307" column="73" selection-start-line="307" selection-start-column="73" selection-end-line="307" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_latency_py.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5985">
-          <caret line="315" column="20" selection-start-line="315" selection-start-column="20" selection-end-line="315" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/list_detailedLatency_py.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="328" lean-forward="true" selection-start-line="328" selection-end-line="328" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frontApp/views.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -731,8 +654,36 @@
           <caret line="72" column="7" selection-start-line="72" selection-start-column="7" selection-end-line="81" selection-end-column="25" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <marker date="1560393449402" expanded="true" signature="1270:1271" ph="..." />
+            <marker date="1560396490947" expanded="true" signature="1270:1271" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_throughput_py.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="316" lean-forward="true" selection-start-line="316" selection-end-line="316" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_latency_py.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="99">
+          <caret line="314" lean-forward="true" selection-start-line="314" selection-end-line="314" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_txCompeltion_py.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="327" lean-forward="true" selection-start-line="327" selection-end-line="327" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/list_detailedLatency_py.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="328" lean-forward="true" selection-start-line="328" selection-end-line="328" />
         </state>
       </provider>
     </entry>
