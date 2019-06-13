@@ -10,7 +10,7 @@ output.log
 log/
 
 # Ignore any generted html files
-*.html
+# *.html
 
 # Ignore DS_Store files from Mac
 **.DS_Store
