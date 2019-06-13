@@ -340,15 +340,22 @@ def load(request):
     utilities = ZipUtilities()
     path_to="static/download"
     files=os.listdir(path_to)
-    str=files[0]
-    position=str.find('_')
-    nameZip=str[0:position]
-    for filename in files:
-        tmp_dl_path = os.path.join(path_to, filename)
-        utilities.toZip(tmp_dl_path, filename)
-    # utilities.close()
-    response = StreamingHttpResponse(utilities.zip_file, content_type='application/zip')
-    response['Content-Disposition'] = 'attachment;filename="{0}"'.format(nameZip+".zip")
+    if len(files)!=0:
+        str=files[0]
+        position=str.find('_')
+        nameZip=str[0:position]
+        for filename in files:
+            tmp_dl_path = os.path.join(path_to, filename)
+            utilities.toZip(tmp_dl_path, filename)
+        # utilities.close()
+        response = StreamingHttpResponse(utilities.zip_file, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment;filename="{0}"'.format(nameZip+".zip")
+        return response
+    else:
+        tmp_dl_path = "static/temp/Testing.txt"
+        utilities.toZip(tmp_dl_path, "Testing.txt")
+        response = StreamingHttpResponse(utilities.zip_file, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment;filename="{0}"'.format( "Report is testing.zip")
     return response
 def download(request):
     del_file('static/download')
