@@ -23,6 +23,6 @@ To install the package to your computer, simply run the following command in the
 * Step 2:Enter the URL http://127.0.0.1:8000/experiment/ in the browser to enter the Ethereum configuration page.
 ## Example
 ![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/config.png)
-![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/testconfig.png)
+
 
 
