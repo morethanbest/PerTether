@@ -21,9 +21,22 @@ To install the package to your computer, simply run the following command in the
 * Step 1:Enter the directory of this project and execute the following command to start the Django project.
   * python manage.py runserver 127.0.0.1:8000
 * Step 2:Enter the URL http://127.0.0.1:8000/experiment/ in the browser to enter the Ethereum configuration page.
-## Example
+## Running Example
+PerTether enables automated deployment of the Ethereum test blockchain.
+* Users can configure difficulty, gas limlit,start type, client type, miner count and node count on the Ethereum configuration web page according to their own needs.
 ![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/config.png)
+* Users can configure start request rate, finish request  rate,duration, client type  and smart contract on the test configuration web page according to their own needs.
 ![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/testConfig.png)
+* Throughput web page shows the throughput differentdifficulty and gas limit settings.(The picture with gray background indicates that the report has not been tested yet)
+![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/throught.png)
+* Latency web page shows the latency differentdifficulty and gas limit settings.(The picture with gray background indicates that the report has not been tested yet)
+![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/latency.png)
+* TxCompletion web page shows the transaction completion rate of different gas priceand request rate. (The picture with gray background indicates that the report has not been tested yet)
+![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/txcompletion.png)
+* DetailedLatency  web page shows the latency of different gas priceand request rate.(The picture with gray background indicates that the report has not been tested yet)
+![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/detailedLatency.png)
+* Users can download test report compression files, including reports in jpg、csv and json format.
+![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/download.png)
 
 
 
