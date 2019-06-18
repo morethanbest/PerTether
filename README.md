@@ -24,9 +24,5 @@ To install the package to your computer, simply run the following command in the
 ## Example
 ![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/config.png)
 ![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/testconfig.png)
-![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/throught.png)
-![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/latency.png)
-![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/txcompletion.png)
-![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/detailedLatency.png)
-![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/download.png)
+
 
