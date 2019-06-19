@@ -5,7 +5,7 @@ PerTether is a tool that can automatically initialize a private Ethereum blockch
 If you run our tools you need to install the following software environment.
 
 ### Software Environment Configuration
-####Python 3.6
+#### Python 3.6
 
 To install the package to your computer, simply run the following command in the base directory:
 
@@ -23,15 +23,15 @@ pip install subprocess
 pip install execjs
 ```
 
-####NodeJS
+#### NodeJS
 
 Version 8.12.0 or above, but not exceed version 8. Run ``` npm install ```  in the root directory to install dependences.
 
-####Docker
+#### Docker
 
 Version 18.09.1 or above. Docker image geth required. Run ```docker pull ethereum/client-go:alltools-v1.8.26```.
 
-####Docker-compose
+#### Docker-compose
 
 Version 1.23.2 or above. Need docker subnet support.
 
