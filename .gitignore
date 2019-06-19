@@ -1,5 +1,6 @@
-architecture.pptx
+
 .idea/*
+gui/.idea/*
 *.bak
 zookeeper.out
 node_modules/*

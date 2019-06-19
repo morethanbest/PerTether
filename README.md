@@ -3,24 +3,51 @@
 PerTether is a tool that can automatically initialize a private Ethereum blockchain and execute performance tests on it. PerTether is designed based on the performance concerns of the private Ethereum blockchain. PerTether can fully test the private Ethereum blockchain in different scenarios with a single start operation. There is no need to build test chain and simulate the scenarios manually. Researchers only need to deﬁne a simple conﬁguration, PerTether will do the rest steps, which provides convenience for the researchers. 
 ## Installation
 If you run our tools you need to install the following software environment.
+
 ### Software Environment Configuration
-Python 3.6
+####Python 3.6
+
 To install the package to your computer, simply run the following command in the base directory:
-* pip install Django
-* pip install json
-* pip install urllib
-* pip install shutil
-* pip install zipfile
-* pip install os
-* pip install zipstream
-* pip install pandas as pd
-* pip install time
-* pip install subprocess
-* pip install execjs
+
+```shell
+pip install Django
+pip install json
+pip install urllib
+pip install shutil
+pip install zipfile
+pip install os
+pip install zipstream
+pip install pandas as pd
+pip install time
+pip install subprocess
+pip install execjs
+```
+
+####NodeJS
+
+Version 8.12.0 or above, but not exceed version 8. Run ``` npm install ```  in the root directory to install dependences.
+
+####Docker
+
+Version 18.09.1 or above. Docker image geth required. Run ```docker pull ethereum/client-go:alltools-v1.8.26```.
+
+####Docker-compose
+
+Version 1.23.2 or above. Need docker subnet support.
+
+### Hardware requirement
+
+At  least  4 CPU Cores and 16 GB Memory.  Ethereum miners need lots of resource, more resource means better performance.
+
 ## How do I run this project?
-* Step 1:Enter the directory of this project and execute the following command to start the Django project.
-  * python manage.py runserver 127.0.0.1:8000
-* Step 2:Enter the URL http://127.0.0.1:8000/experiment/ in the browser to enter the Ethereum configuration page.
+* Step 1: Enter the directory of this project and execute the following command to start the Django project. 
+
+* ```shell
+  cd gui
+  python manage.py runserver 127.0.0.1:8000
+  ```
+
+* Step 2: Enter the URL http://127.0.0.1:8000/experiment/ in the browser to enter the Ethereum configuration page.
 ## Running Example
 PerTether enables automated deployment of the Ethereum test blockchain.
 * Users can configure difficulty, gas limlit,start type, client type, miner count and node count on the Ethereum configuration web page according to their own needs.
