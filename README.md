@@ -2,7 +2,11 @@
 ## Introduction
 PerTether is a tool that can automatically initialize a private Ethereum blockchain and execute performance tests on it. PerTether is designed based on the performance concerns of the private Ethereum blockchain. PerTether can fully test the private Ethereum blockchain in different scenarios with a single start operation. There is no need to build test chain and simulate the scenarios manually. Researchers only need to deﬁne a simple conﬁguration, PerTether will do the rest steps, which provides convenience for the researchers. 
 ## Installation
-If you run our tools you need to install the following software environment.
+If you run our tools you need to follow the following requirements.
+
+### Hardware requirement
+
+At  least  4 CPU Cores and 16 GB Memory.  Ethereum miners need lots of resource, more resource means better performance.
 
 ### Software requirement
 
@@ -35,10 +39,6 @@ Version 18.09.1 or above. Docker image geth required. You can download Docker at
 
 Version 1.23.2 or above. You can download Docker-compose at https://docs.docker.com/compose/install/. Need docker subnet support.
 
-### Hardware requirement
-
-At  least  4 CPU Cores and 16 GB Memory.  Ethereum miners need lots of resource, more resource means better performance.
-
 ## How do I run PerTether?
 
 * Step 1: Clone the PerTether repository.
@@ -61,10 +61,10 @@ At  least  4 CPU Cores and 16 GB Memory.  Ethereum miners need lots of resource,
 
 PerTether enables automated deployment of the Ethereum test blockchain.
 
-* Users can configure difficulty, gas limlit,start type, client type, miner count and node count on the Ethereum configuration web page according to their own needs.
+* Users can configure difficulty, gas limlit, start type, client type, miner count and node count on the Ethereum configuration web page according to their own needs.
 ![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/config.png)
 
-* Users can configure start request rate, finish request  rate,duration, client type  and smart contract on the test configuration web page according to their own needs.
+* Users can configure start request rate, finish request rate, duration, client type and smart contract on the test configuration web page according to their own needs.
 ![](https://github.com/morethanbest/PerTether/blob/master/gui/static/images/testConfig.png)
 
 * Throughput web page shows the throughput differentdifficulty and gas limit settings.(The picture with gray background indicates that the report has not been tested yet)
