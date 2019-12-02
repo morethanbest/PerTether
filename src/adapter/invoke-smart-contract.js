@@ -18,19 +18,19 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
     let isTimeout = true;
     let send = web3.eth.sendTransaction({
         from: account,
-        gasPrice: parseInt(gasprice * 1000000000).toString(),
+        gasPrice: 20,
         gas: '1000000',
         to: address,
         value: "100000000000000000",
         data: data
-    }).then(function (receipt) {
+    }).on('confirmation', function (confirmationNumber, receipt) {
         isTimeout = false;
         result.status = 0;
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
-        winston.info(`${nodeName}: TX confirmed number ${receipt.blockHash}`);
+        winston.info(`${nodeName}: TX confirmed number ${confirmationNumber}`);
         return Promise.resolve(result);
-    }, function (error) {
+    }).on('error', function (error) {
         isTimeout = false;
         winston.error(`${nodeName}: TX error ${JSON.stringify(error)}`);
         result.finishTime = Date.now();
