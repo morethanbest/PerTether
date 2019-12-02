@@ -23,14 +23,14 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         to: address,
         value: "100000000000000000",
         data: data
-    }).on('confirmation', function (confirmationNumber, receipt) {
+    }).then(function (receipt) {
         isTimeout = false;
         result.status = 0;
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
-        winston.info(`${nodeName}: TX confirmed number ${confirmationNumber}`);
+        winston.info(`${nodeName}: TX confirmed number ${receipt.blockHash}`);
         return Promise.resolve(result);
-    }).on('error', function (error) {
+    }, function (error) {
         isTimeout = false;
         winston.error(`${nodeName}: TX error ${JSON.stringify(error)}`);
         result.finishTime = Date.now();
