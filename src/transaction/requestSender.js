@@ -44,7 +44,7 @@ async function runTest(nodeName, accounts, proxy, rate, duration, contractConfig
         } catch (e) {
             winston.error(`Catch error sendRequests: ${e.toString()}`);
         }
-        winston.info(`${nodeName}: Request rate ${rate}. Results ${JSON.stringify(results)}.`);
+        // winston.info(`${nodeName}: Request rate ${rate}. Results ${JSON.stringify(results)}.`);
         txNum = 0;
         //todo 这里返回可以添加一个类型requestType判断，性能测试的请求为normal，异常请求为illegal，低性能为inefficient
         return {
