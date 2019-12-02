@@ -25,7 +25,7 @@ module.exports.readAccounts = async function readAccounts(providers){
 async function unlockAccount(node, address, privateKey, providers)  {
     try {
         winston.info(`Unlock account ${address}, privateKey ${privateKey}`);
-        await providers[node].eth.personal.unlockAccount(address, privateKey, 100);
+        await providers[node].eth.personal.unlockAccount(address, privateKey, 10000);
         if (typeof accounts[node] !== 'undefined') {
             accounts[node].push([address, privateKey]);
         }
