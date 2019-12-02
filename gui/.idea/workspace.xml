@@ -2,36 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44841f68-f9eb-4fa7-ad52-5bcff55b5080" name="Default Changelist" comment="delete">
-      <change afterPath="$PROJECT_DIR$/../config/contract/BadPerformance.sol" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../config/failure.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../config/sampleFailure.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../config/workload/BadPerformance.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/failure/consensus.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/failure/failureManager.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/failure/network.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../src/transaction/failureClientControl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../config.json" beforeDir="false" afterPath="$PROJECT_DIR$/../config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../config/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../config/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/front.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/front.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/json/config0.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/json/config0.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/experiment_py.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/experiment_py.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/testConfig_py.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/testConfig_py.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/adapter/install-smart-contract.js" beforeDir="false" afterPath="$PROJECT_DIR$/../src/adapter/install-smart-contract.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/adapter/invoke-smart-contract.js" beforeDir="false" afterPath="$PROJECT_DIR$/../src/adapter/invoke-smart-contract.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/dataAnalysis/processData.js" beforeDir="false" afterPath="$PROJECT_DIR$/../src/dataAnalysis/processData.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/setup/geth/docker/tmp/node0/work/genesis.json" beforeDir="false" afterPath="$PROJECT_DIR$/../src/setup/geth/docker/tmp/node0/work/genesis.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/setup/geth/docker/tmp/node1/work/genesis.json" beforeDir="false" afterPath="$PROJECT_DIR$/../src/setup/geth/docker/tmp/node1/work/genesis.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/setup/geth/docker/tmp/node2/work/genesis.json" beforeDir="false" afterPath="$PROJECT_DIR$/../src/setup/geth/docker/tmp/node2/work/genesis.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/setup/geth/docker/tmp/node2/work/start_geth.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../src/setup/geth/docker/tmp/node2/work/start_geth.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/setup/geth/docker/tmp/node3/work/genesis.json" beforeDir="false" afterPath="$PROJECT_DIR$/../src/setup/geth/docker/tmp/node3/work/genesis.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/setup/setup.js" beforeDir="false" afterPath="$PROJECT_DIR$/../src/setup/setup.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/transaction/clientControl.js" beforeDir="false" afterPath="$PROJECT_DIR$/../src/transaction/clientControl.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/transaction/requestSender.js" beforeDir="false" afterPath="$PROJECT_DIR$/../src/transaction/requestSender.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/util/providers.js" beforeDir="false" afterPath="$PROJECT_DIR$/../src/util/providers.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -236,10 +207,10 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/front/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1081">
+            <state relative-caret-position="436">
               <caret line="47" column="45" selection-start-line="47" selection-start-column="45" selection-end-line="47" selection-end-column="45" />
             </state>
           </provider>
@@ -248,7 +219,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/front/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="667">
+            <state relative-caret-position="436">
               <caret line="31" selection-start-line="31" selection-end-line="31" />
             </state>
           </provider>
@@ -257,16 +228,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/experiment_py.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4554">
+            <state relative-caret-position="263">
               <caret line="198" column="105" selection-start-line="198" selection-start-column="105" selection-end-line="198" selection-end-column="105" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/testConfig_py.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
+            <state relative-caret-position="348">
               <caret line="184" column="56" selection-start-line="184" selection-start-column="56" selection-end-line="184" selection-end-column="56" />
             </state>
           </provider>
@@ -581,13 +552,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20529328" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20529328" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.497979" weight="0.3285968" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49555376" visible="true" weight="0.3280098" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49555376" visible="true" weight="0.3280098" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -717,6 +689,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1173">
           <caret line="66" column="33" selection-start-line="66" selection-start-column="33" selection-end-line="66" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -727,30 +702,6 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/frontApp/admin.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1081">
-          <caret line="47" column="45" selection-start-line="47" selection-start-column="45" selection-end-line="47" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/front/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="667">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/experiment_py.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4554">
-          <caret line="198" column="105" selection-start-line="198" selection-start-column="105" selection-end-line="198" selection-end-column="105" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontApp/models.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/list_throughput_py.html">
@@ -776,8 +727,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/testConfig_py.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
+        <state relative-caret-position="348">
           <caret line="184" column="56" selection-start-line="184" selection-start-column="56" selection-end-line="184" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontApp/models.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/experiment_py.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="263">
+          <caret line="198" column="105" selection-start-line="198" selection-start-column="105" selection-end-line="198" selection-end-column="105" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/front/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="436">
+          <caret line="47" column="45" selection-start-line="47" selection-start-column="45" selection-end-line="47" selection-end-column="45" />
         </state>
       </provider>
     </entry>
