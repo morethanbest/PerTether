@@ -1,6 +1,6 @@
 {
 	"difficulty": ["0x0"],
-	"gasLimit": [4712388],
+	"gasLimit": [10000000],
 	"nodeCount": 4,
 	"minerCount": 2,
 	"startUpType": "docker",
