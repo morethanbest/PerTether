@@ -140,12 +140,12 @@ async function run(configFile, resultPath) {
             client.stop();
             finalResult.timestamp = Math.floor(Date.now()/1000);
             tFinalResult.result.push(finalResult);
-            // let stopStatus = await setup.stopTestChain(clientType);
-            // if (stopStatus !== 0)
-            //     winston.error('Docker stopped failed. Please stop manually.');
-            // let finalResultStr = JSON.stringify(finalResult);
-            // fs1.writeFileSync(path.join(resultPath, `report${chainCount}.json`), finalResultStr);
-            // chainCount ++;
+            let stopStatus = await setup.stopTestChain(clientType);
+            if (stopStatus !== 0)
+                winston.error('Docker stopped failed. Please stop manually.');
+            let finalResultStr = JSON.stringify(finalResult);
+            fs1.writeFileSync(path.join(resultPath, `report${chainCount}.json`), finalResultStr);
+            chainCount ++;
         }
     }
     winston.info(`##########True Final Result##########`);

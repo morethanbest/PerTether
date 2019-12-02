@@ -63,10 +63,10 @@ async function injectFailure(failure) {
             await consensus.nodeFailure(clientType, failure.nodeName, failure.label);
             break;
         case 'network-packageLoss':
-            await network.packageLoss(failure.duration, failure.nodeName, 90, failure.label);
+            await network.packageLoss(failure.duration, failure.nodeName, failure.level * 30, failure.label);
             break;
         case 'network-latency':
-            await network.networkLatency(failure.duration, failure.nodeName, 5000, failure.label);
+            await network.networkLatency(failure.duration, failure.nodeName, failure.level * failure.level * 1000, failure.label);
             break;
     }
 
