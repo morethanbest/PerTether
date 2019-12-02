@@ -19,7 +19,7 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
     let send = web3.eth.sendTransaction({
         from: account,
         gasPrice: parseInt(gasprice * 1000000000).toString(),
-        gas: '200000',
+        gas: '500000',
         to: address,
         value: "100000000000000000",
         data: data
