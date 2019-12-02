@@ -7,7 +7,7 @@ const fs = require('fs');
 //gasprice unit gwei
 module.exports.submitTransaction = async function (nodeName, web3, address, abi, account, passphrase, gasprice, args) {
     let result = {
-        status: 1,
+        status: 0,
         gasprice: gasprice,
         startTime: Date.now(),
         finishTime: -1,
@@ -19,19 +19,19 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
     let send = web3.eth.sendTransaction({
         from: account,
         gasPrice: parseInt(gasprice * 1000000000).toString(),
-        gas: '200000',
+        gas: '2000000',
         to: address,
         value: "100000000000000000",
         data: data
     }).then(function (receipt) {
         isTimeout = false;
-        result.status = 0;
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
-        // winston.info(`${nodeName}: TX confirmed block hash ${receipt.blockHash}`);
+        winston.info(`${nodeName}: TX confirmed block hash ${receipt.blockHash}`);
         return Promise.resolve(result);
     }, function (error) {
         isTimeout = false;
+        result.status = 1;
         winston.error(`${nodeName}: TX error ${JSON.stringify(error)}`);
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
