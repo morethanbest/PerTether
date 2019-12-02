@@ -41,7 +41,7 @@ function processResult(result, rate, duration){
             }
             //秒级处理
             let retCount = Math.floor((res[j].finishTime - startTime) / 1000);
-            if (retCount < recDuration) {
+            if (retCount >= 0 && retCount < recDuration) {
                 throughputBySec[retCount][1]++;
                 latencyBySec[retCount][1] += res[j].latency;
             }
