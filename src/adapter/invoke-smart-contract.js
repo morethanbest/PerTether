@@ -13,6 +13,7 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         finishTime: -1,
         latency: -1
     };
+    // winston.info(`Debug: address ${address} args ${JSON.stringify(args)} time ${new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')}`);
     let data = web3.eth.abi.encodeFunctionCall(abi, args);
     let isTimeout = true;
     let send = web3.eth.sendTransaction({
@@ -27,11 +28,11 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         result.status = 0;
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
-        winston.debug(`${nodeName}: TX confirmed block hash ${receipt.blockHash}`);
+        // winston.info(`${nodeName}: TX confirmed block hash ${receipt.blockHash}`);
         return Promise.resolve(result);
     }, function (error) {
         isTimeout = false;
-        winston.debug(`${nodeName}: TX error ${JSON.stringify(error)}`);
+        winston.error(`${nodeName}: TX error ${JSON.stringify(error)}`);
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
         return Promise.resolve(result);
@@ -44,7 +45,7 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
                 result.latency = result.finishTime - result.startTime;
                 resolve(result);
             }
-        }, 150000);
+        }, 300000);
     });
     return await Promise.race([send, timeout]);
 };

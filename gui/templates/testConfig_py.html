@@ -15,97 +15,6 @@
 		<script type="text/javascript" src="../static/scripts/jquery.min.js"></script>
 		<script src="../static/scripts/FileSaver.js"></script>
             <script type="text/javascript" src="../static/scripts/ichart.1.2.1.min.js"></script>
-		<script type="text/javascript">
-				$(document).ready(function(){
-                    var labels={{ labelArr|safe }};
-                    var values={{ numArr|safe }};
-                    if(labels.length!=0){
-                        $("#pic").append("<div id='canvasDiv' style='display:inline;'></div>");
-                    var data = [
-                        {
-                            name: 'Frequence',
-                            value: values,
-                            color: '#aad0db',
-                            line_width: 2
-                        }
-                    ];
-
-                    var chart = new iChart.LineBasic2D({
-                        render: 'canvasDiv',
-                        data: data,
-                        width: 400,
-                        height: 350,
-                        title : {
-				        text:'Duration with Different Frequencies ',
-				        fontsize:12,
-				        color:'#000000'
-			            },
-			        subtitle : {
-                            fontsize:10,
-				        text:'x-coordinate: frequency|y-coordinate: duration',
-				        color:'#333333'
-			        },
-                        background_color: '#FEFEFE',
-                        tip: {
-                            enable: true,
-                            shadow: true,
-                            move_duration: 400,
-                            border: {
-                                enable: true,
-                                radius: 5,
-                                width: 2,
-                                color: '#3f8695'
-                            },
-                            listeners: {
-                                //tip:提示框对象、name:数据名称、value:数据值、text:当前文本、i:数据点的索引
-                                parseText: function (tip, name, value, text, i) {
-                                    return "Latency:" + value;
-                                }
-                            }
-                        },
-                        crosshair: {
-                            enable: true,
-                            line_color: '#62bce9'//十字线的颜色
-                        },
-                        sub_option: {
-                            label: false,
-                            point_size: 10
-                        },
-                        coordinate: {
-                            width: 240,
-                            height: 200,
-                            axis: {
-                                color: '#dcdcdc',
-                                width: 1
-                            },
-                            scale: [{
-                                position: 'left',
-                                start_scale: 0,
-                                end_scale: Math.max(values),
-                                scale_space: Math.max(values) / 10,
-                                scale_size: 2,
-                                scale_color: '#9f9f9f'
-                            }, {
-                                position: 'bottom',
-                                labels: labels
-                            }]
-                        }
-
-                    });
-
-                    //开始画图
-                    chart.draw();
-                    $("#pic").addClass("card");
-                    $("#pic").addClass("card-small ");
-                    $("#pic").addClass("mb4")
-                    {#$("#pic").append("<button type='button' id='viewbtn' class='btn btn-accent' style='width:100px;bottom:5%'>View Report</button>");#}
-                    {#$("#pic").append("<br>");#}
-                    $("#viewbtn").click(function(){
-                        window.location.href = "/throughput";
-                    });
-                    }
-				});
-		</script>
   </head>
   <body class="h-100">
 
@@ -187,64 +96,122 @@
             </div>
             <!-- End Page Header -->
               <div class="row" >
-			  <div class="col-lg-6" style="height: 380px;">
-                <div class="card card-small mb-4">
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item p-3">
-                      <div class="row">
-                        <div class="col">
-                          <form name="input" action="/testConfig/" method="post">
-                            <br>
-                              <div class="form-row">
-                                  <span><b>&nbsp;&nbsp;Start tps</b></span>
-                              </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-12">
-                                  <input type="number" name="startTps" min="2" class="form-control" id="startTps" placeholder="Start tps" required="required">
-                              </div>
-                            </div>
-                              <div class="form-row">
-                                  <span><b>&nbsp;&nbsp;Finish Tps</b></span>
-                              </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-12">
-                                  <input type="number" name="finishTps" min="4" class="form-control" id="finishTps" placeholder="Finish tps" required="required">
-                              </div>
-                            </div>
-                              <div class="form-row">
-                                  <span><b>&nbsp;&nbsp;Duration</b></span>
-                              </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-12">
-                                  <input type="number" name="duration" min="60" step="60" class="form-control" id="duration" placeholder="Duration" required="required">
-                              </div>
-                            </div>
-                              <div class="form-row">
-                                  <span><b>&nbsp;&nbsp;Smart Contract</b></span>
-                              </div>
-                              <div class="form-row">
-                                  <div class="form-group col-md-12">
-										<select name="smartcontract" id="smartcontract"  class="form-control">
-                                            <option value="HelloWorld">HelloWorld</option>
-                                            <option value="SmallBank">SmallBank</option>
-                                        </select>
+{#                  <form name="input" action="/testConfig/" method="post">#}
+                  <div class="col-lg-12">
+                    <div class="card card-small mb-4">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item p-3">
+                          <div class="row">
+                            <div class="col">
+                                <div class="form-row">
+                                    <span><b>&nbsp;&nbsp;Performance Test Configuration</b></span>
                                 </div>
-                              </div>
-
-                            <button type="submit" class="btn btn-accent" style="width: 100px">Start</button>
-                              <button type='button' id='viewbtn' class='btn btn-accent' style="float: right; width:100px;">View Report</button>
-
-                          </form>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-                  <div id="pic" class="col-lg-6" style="height: 380px;">
-
-{#                      <button type='submit' class='btn btn-accent'>Next</button>#}
+                                <br>
+                                  <div class="form-row">
+                                      <span><b>&nbsp;&nbsp;Request Rate(tx/s)</b></span>
+                                  </div>
+                                <div class="form-row">
+                                  <div class="form-group col-md-12">
+                                      <input type="number" name="startTps" min="2" class="form-control" id="startTps" placeholder="Request Rate" required="required">
+                                  </div>
+                                </div>
+                                  <div class="form-row">
+                                      <span><b>&nbsp;&nbsp;Duration(s)</b></span>
+                                  </div>
+                                <div class="form-row">
+                                  <div class="form-group col-md-12">
+                                      <input type="number" name="duration" min="60" step="60" class="form-control" id="duration" placeholder="Duration" required="required">
+                                  </div>
+                                </div>
+                                  <div class="form-row">
+                                      <span><b>&nbsp;&nbsp;Smart Contract</b></span>
+                                  </div>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-12">
+                                            <select name="smartcontract" id="smartcontract"  class="form-control">
+                                                <option value="HelloWorld">HelloWorld</option>
+                                            </select>
+                                    </div>
+                                  </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
+                <div class="col-lg-12">
+                    <div class="card card-small mb-4">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item p-3">
+                          <div class="row">
+                            <div class="col">
+                                <div class="form-row">
+                                    <span><b>&nbsp;&nbsp;Failure Configuration</b></span>
+                                </div>
+                                <br>
+                                  <div class="form-row">
+                                      <span><b>&nbsp;&nbsp;Type</b></span>
+                                  </div>
+                                <div class="form-row">
+                                      <div class="form-group col-md-12">
+                                            <select name="type" id="type"  class="form-control">
+                                                <option value="nodeFailure">Node Failure</option>
+                                                <option value="smartContract">Bad Performance Smart Contract</option>
+                                                <option value="application-normal">Traffic Spike</option>
+                                                <option value="network-packageLoss">Package Loss</option>
+                                                <option value="nodeFailure">nodeFailure</option>
+                                            </select>
+                                    </div>
+                                </div>
+                                  <div class="form-row">
+                                      <span><b>&nbsp;&nbsp;Start Time(s)</b></span>
+                                  </div>
+                                <div class="form-row">
+                                  <div class="form-group col-md-12">
+                                      <input type="number" name="startAfter" min="4" class="form-control" id="startAfter" placeholder="start time" required="required">
+                                  </div>
+                                </div>
+                                  <div class="form-row">
+                                      <span><b>&nbsp;&nbsp;Duration(s)</b></span>
+                                  </div>
+                                <div class="form-row">
+                                  <div class="form-group col-md-12">
+                                      <input type="number" name="duration" min="60" step="60" class="form-control" id="duration" placeholder="Duration" required="required">
+                                  </div>
+                                </div>
+                                  <div class="form-row">
+                                        <span><b>&nbsp;&nbsp;Level</b></span>
+                                  </div>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-12">
+                                    <input type="number" name="level" min="1" max="3" class="form-control" id="level" placeholder="level">
+                                      </div>
+                                  </div>
+                                <div class="form-row">
+                                        <span><b>&nbsp;&nbsp;Node Name</b></span>
+                                  </div>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-12">
+                                    <input type="text" name="nodeName" class="form-control" id="nodeName" placeholder="nodeName">
+                                      </div>
+                                  </div>
+                                  <div class="form-row">
+                                        <span><b>&nbsp;&nbsp;Label</b></span>
+                                  </div>
+                                  <div class="form-row">
+                                      <div class="form-group col-md-12">
+                                    <input type="text" name="label" max="4" class="form-control" id="label" placeholder="label" required="required">
+                                      </div>
+                                  </div>
+                                    <br>
+                                <button type="submit" class="btn btn-accent" style="width: 100px">Start</button>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                </div>
+{#              </form>#}
 
               </div>
             <!-- End Default Light Table -->

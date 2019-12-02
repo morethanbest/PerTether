@@ -1,12 +1,22 @@
 {
-	"difficulty": ["0xfffff"],
-	"gasLimit": [4712388, 2356194],
+	"difficulty": ["0x0"],
+	"gasLimit": [4712388],
 	"nodeCount": 4,
 	"minerCount": 1,
 	"startUpType": "docker",
-	"clientType": "Geth",
-    "startTps": 4,
-    "finishTps": 256,
-    "duration": 60,
-    "smartContract": "HelloWorld"
+	"clientType": "geth",
+    "startTps": 1,
+    "finishTps": 1,
+    "duration": 120,
+    "smartContract": "HelloWorld",
+	"failures": [
+		{
+			"type": "nodeFailure",
+			"startAfter": 10,
+			"duration": 20,
+			"level": 1,
+			"nodeName": "node1",
+			"label": "node failure test"
+		}
+	]
 }

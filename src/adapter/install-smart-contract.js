@@ -25,7 +25,7 @@ module.exports.run = async function (node, contractPath, contractName) {
     const bytecode = output.contracts[_contractName].bytecode;
     const abi = output.contracts[_contractName].interface;
     let jsonABI = JSON.parse(abi);
-    const contractStructure = web3.eth.Contract(jsonABI);
+    const contractStructure = new web3.eth.Contract(jsonABI);
     winston.info(`Deploying smart contract ${contractName} ...`);
     let isFailed = true;
     let finalInstance;

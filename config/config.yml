@@ -11,3 +11,6 @@ contracts:
   - name: HelloWorld
     path: config/contract/HelloWorld.sol
     workload: config/workload/HelloWorld.js
+  - name: BadPerformance
+    path: config/contract/BadPerformance.sol
+    workload: config/workload/BadPerformance.js

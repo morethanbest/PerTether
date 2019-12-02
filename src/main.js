@@ -7,6 +7,7 @@ const util = require('./util/util');
 const winston = require('winston');
 const contract = require('./transaction/contractInfo');
 const client = require('./transaction/clientControl');
+const failureManager = require('./failure/failureManager');
 const dataAnalysis = require('./dataAnalysis/processData');
 const path = require('path');
 const fs1 = require('fs');
@@ -78,6 +79,8 @@ async function run(configFile, resultPath) {
     //start and stop docker
     winston.info('PerTether starts a new test task.');
     let configObject = util.parseYaml('config/config.yml');
+    let failureConfigObject = util.parseYaml('config/failure.yml');
+    winston.info(JSON.stringify(failureConfigObject));
     let tFinalResult = {
         timestamp: Date.now(),
         difficulty: difficulties,
@@ -101,7 +104,6 @@ async function run(configFile, resultPath) {
             let nodeCount = configObject.nodes.length;
 
             client.startClients(nodeCount);
-
             // let testConfig = configObject.tests;
             let rate = startRate;
             // let rate = testConfig.startRate;
@@ -116,14 +118,18 @@ async function run(configFile, resultPath) {
                 generalLatency:[],
                 txCompeltion: [],
                 // gasCompletion: [],
-                detailedLatency: []
-
+                detailedLatency: [],
+                failureInfo: null
             };
             while (eachClientRate <= finishRate / nodeCount) {
                 let results = [];
+                failureManager.initFailures(configObject.nodes, clientType, account.getAccounts(),
+                    eachClientRate, contract.getContractConfig(smartContract), failureConfigObject.failure, results);
+                failureManager.startFailureTimer();
                 await client.startTest(configObject.nodes, account.getAccounts(), eachClientRate, duration, contract.getContractConfig(smartContract), results);
-                let data = dataAnalysis.processResult(results);
+                let data = dataAnalysis.processResult(results, rate, duration);
                 winston.info(`Result rate ${eachClientRate * nodeCount} ${data}`);
+                finalResult.failureInfo = failureManager.getCurrentFailureInfo();
                 finalResult.throughput.push(data.throughput);
                 finalResult.generalLatency.push(data.latency);
                 finalResult.txCompeltion.push(data.gasCompletion);
@@ -134,12 +140,12 @@ async function run(configFile, resultPath) {
             client.stop();
             finalResult.timestamp = Math.floor(Date.now()/1000);
             tFinalResult.result.push(finalResult);
-            let stopStatus = await setup.stopTestChain(clientType);
-            if (stopStatus !== 0)
-                winston.error('Docker stopped failed. Please stop manually.');
-            let finalResultStr = JSON.stringify(finalResult);
-            fs1.writeFileSync(path.join(resultPath, `report${chainCount}.json`), finalResultStr);
-            chainCount ++;
+            // let stopStatus = await setup.stopTestChain(clientType);
+            // if (stopStatus !== 0)
+            //     winston.error('Docker stopped failed. Please stop manually.');
+            // let finalResultStr = JSON.stringify(finalResult);
+            // fs1.writeFileSync(path.join(resultPath, `report${chainCount}.json`), finalResultStr);
+            // chainCount ++;
         }
     }
     winston.info(`##########True Final Result##########`);

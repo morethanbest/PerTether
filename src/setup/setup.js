@@ -12,8 +12,8 @@ const fs = require('fs');
 
 module.exports.startTestChain = async function startTestChain(client) {
     winston.info(`Start test blockchain, client type: ${client} ...`);
-    if (client === 'Geth') {
-        let result = await dockerCompose.upAll({cwd: path.join(__dirname, 'geth', 'docker'), log: true});
+    if (client === 'geth') {
+        let result = await dockerCompose.upAll({cwd: path.join(__dirname, client, 'docker'), log: true});
         return result.exitCode;
     }
     winston.error(`No ${client} client supported.`);
@@ -23,8 +23,8 @@ module.exports.startTestChain = async function startTestChain(client) {
 
 module.exports.stopTestChain = async function stopTestChain(client) {
     winston.info(`Stop test blockchain, client type: ${client} ...`);
-    if (client === 'Geth') {
-        let result = await dockerCompose.down({cwd: path.join(__dirname, 'geth', 'docker'), log: true});
+    if (client === 'geth') {
+        let result = await dockerCompose.down({cwd: path.join(__dirname, client, 'docker'), log: true});
         return result.exitCode;
     }
     winston.error(`No ${client} client supported.`);
@@ -34,8 +34,14 @@ module.exports.stopTestChain = async function stopTestChain(client) {
 module.exports.start = async function (configObject) {
     let nodesConfig = configObject.nodes;
     await providers.initProviders(nodesConfig);
-    let contract = await install.run(nodesConfig[0].nodeName, configObject.contracts[0].path, configObject.contracts[0].name);
-    contractInfo.newContract(configObject.contracts[0], contract);
+    let promises = [];
+    for (let i = 0; i < configObject.contracts.length; i++) {
+        promises.push(install.run(nodesConfig[0].nodeName, configObject.contracts[i].path, configObject.contracts[i].name));
+    }
+    let contracts = await Promise.all(promises);
+    for (let i = 0; i < configObject.contracts.length; i++) {
+        contractInfo.newContract(configObject.contracts[i], contracts[i]);
+    }
 };
 
 module.exports.writeGenesis = function (client, difficulty, gasLimit, nodeCount) {

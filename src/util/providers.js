@@ -8,7 +8,7 @@ let providers = {};
 
 module.exports.initProviders = async function (config) {
     config.forEach(function (item, index) {
-        providers[item.nodeName] = new Web3(Web3.providers.HttpProvider(item.proxy));
+        providers[item.nodeName] = new Web3(item.proxy);
     });
     await account.readAccounts(providers);
 };

@@ -29,12 +29,8 @@
                                 url: "/deal/",
                                 type: "POST",
                                 data: {
-                                    'Difficulty1': $('#Difficulty1').val(),
-                                    'Difficulty2': $('#Difficulty2').val(),
-                                    'Difficulty3': $('#Difficulty3').val(),
-                                    'gaslimit1': $('#gaslimit1').val(),
-                                    'gaslimit2': $('#gaslimit2').val(),
-                                    'gaslimit3': $('#gaslimit3').val(),
+                                    'Difficulty': $('#Difficulty').val(),
+                                    'gaslimit': $('#gaslimit').val(),
                                     'start_type': $('#start_type').val(),
                                     'node_count': $('#node_count').val(),
                                     'client_type': $('#client_type').val(),
@@ -158,7 +154,7 @@
             </div>
             <!-- End Page Header -->
               <div class="row">
-			  <div class="col-lg-6" style="height: 500px">
+			  <div class="col-lg-12">
                 <div class="card card-small mb-4">
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item p-3">
@@ -169,46 +165,24 @@
                                   <span><b>&nbsp;&nbsp;Difficulty</b></span>
                               </div>
                             <div class="form-row">
-                              <div class="form-group col-md-4">
-                                <input type="text" class="form-control" name="Difficulty1" id="Difficulty1" placeholder="Difficulty" required="required">
-                              </div>
-                               <div class="form-group col-md-4">
-                                <input type="text" class="form-control" name="Difficulty2" id="Difficulty2" placeholder="Difficulty">
-                              </div>
-                                <div class="form-group col-md-4">
-                                  <input type="text" class="form-control" name="Difficulty3" id="Difficulty3" placeholder="Difficulty" >
+                              <div class="form-group col-md-12">
+                                <input type="text" class="form-control" name="Difficulty" id="Difficulty" placeholder="Difficulty" required="required">
                               </div>
                             </div>
                               <div class="form-row">
                                   <span><b>&nbsp;&nbsp;GasLimit</b></span>
                               </div>
                             <div class="form-row">
-                              <div class="form-group col-md-4">
-                                <input type="text" name="gaslimit1" class="form-control" id="gaslimit1" placeholder="GasLimit" required="required" >
-                              </div>
-                                <div class="form-group col-md-4">
-                                <input type="text" name="gaslimit2" class="form-control" id="gaslimit2" placeholder="GasLimit"  >
-                              </div>
-                                <div class="form-group col-md-4">
-                                  <input type="text" name="gaslimit3" class="form-control" id="gaslimit3" placeholder="GasLimit"  >
+                              <div class="form-group col-md-12">
+                                <input type="text" name="gaslimit" class="form-control" id="gaslimit" placeholder="GasLimit" required="required" >
                               </div>
                             </div>
-                              <div class="form-row">
-                                  <span><b>&nbsp;&nbsp;Start Type</b></span>
-                              </div>
-                              <div class="form-row">
-                                  <div class="form-group col-md-12">
-										<select name="start_type" id="start_type"  class="form-control">
-                                            <option value="docker">docker</option>
-                                        </select>
-                                </div>
-                              </div>
                               <div class="form-row">
                                   <span><b>&nbsp;&nbsp;Node Count</b></span>
                               </div>
                               <div class="form-row">
                                   <div class="form-group col-md-12">
-										<input type="number" name="node_count" class="form-control" id="node_count" placeholder="Node Count" required="required">
+										<input type="number" name="node_count" class="form-control" id="node_count" placeholder="Node Count" value="4" required="required" disabled>
                                 </div>
                               </div>
                               <div class="form-row">
@@ -216,19 +190,18 @@
                               </div>
                               <div class="form-row">
                                   <div class="form-group col-md-12">
-										<input type="number" name="miner_count" class="form-control" id="miner_count" placeholder="Miner Count" required="required">
+										<input type="number" name="miner_count" class="form-control" id="miner_count" placeholder="Miner Count" value="2" required="required" disabled>
                                 </div>
                               </div>
                               <div class="form-row"><span><b>&nbsp;&nbsp;Client Type</b></span></div>
                               <div class="form-row">
                                   <div class="form-group col-md-12">
-                              	<select id="client_type" name="client_type" class="form-control" >
-                              	  <option value="Geth">Geth</option>
+                              	<select id="client_type" name="client_type" class="form-control" disabled>
+                              	  <option value="geth">geth</option>
                               	</select>
                                 </div>
 
                               </div>
-                            <button type="button" id="previewbtn" class="btn btn-accent" style="width: 100px;">Preview</button>
                               <button type='button' id='nextbtn' class='btn btn-accent' style="width: 100px;float: right">Next</button>
                           </form>
                         </div>
@@ -237,12 +210,6 @@
                   </ul>
                 </div>
               </div>
-                  <div id="tbl" class="col-lg-6" style="text-align: justify;height: 505px;">
-                      <table class="table mb-0" >
-
-                    </table>
-{#                      <button type='submit' class='btn btn-accent'>Next</button>#}
-                  </div>
 
               </div>
               <br>
