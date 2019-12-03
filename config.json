@@ -5,8 +5,8 @@
 	"minerCount": 2,
 	"startUpType": "docker",
 	"clientType": "geth",
-    "startTps": 128,
-    "finishTps": 128,
+    "startTps": 32,
+    "finishTps": 32,
     "duration": 300,
     "smartContract": "HelloWorld",
 	"failures": [
