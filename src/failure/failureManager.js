@@ -45,7 +45,7 @@ async function injectFailure(failure) {
     failure.startTime = Date.now();
     switch (failure.type) {
         case 'application-normal':
-            clientControl.controlRateIndex(2 * failure.level);
+            clientControl.controlRateIndex(1 + 0.25 * Math.pow(2, failure.level - 1));
             failure.finishTime = Date.now();
             failure.status = 'stopped';
             break;
