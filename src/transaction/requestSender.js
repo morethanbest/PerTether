@@ -29,7 +29,7 @@ async function runTest(nodeName, accounts, proxy, rate, duration, contractConfig
         winston.info(`${nodeName}: Unlock accounts for ${nodeName}.`);
         nodeAccounts = accounts;
         accounts.forEach((item, index) => {
-            promises.push(web3Proxy.eth.personal.unlockAccount(item[0], item[1], 100));
+            promises.push(web3Proxy.eth.personal.unlockAccount(item[0], item[1], 10000));
         });
         try {
         await Promise.all(promises);
