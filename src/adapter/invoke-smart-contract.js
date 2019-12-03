@@ -28,7 +28,7 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         result.status = 0;
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
-        winston.info(`${nodeName}: TX confirmed number ${JSON.stringify(receipt)}`);
+        winston.info(`${nodeName}: TX confirmed number ======> ${JSON.stringify(receipt.blockNumber)}`);
     }).on('error', function (error) {
         isTimeout = false;
         winston.error(`${nodeName}: TX error ${error}`);

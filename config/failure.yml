@@ -2,6 +2,6 @@ failure:
   - type: network-packageLoss
     startAfter: 120
     duration: 120
-    level: 1
+    level: 3
     nodeName: node0
     label: network failure test
