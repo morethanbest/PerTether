@@ -18,8 +18,8 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
     let isTimeout = true;
     let send = web3.eth.sendTransaction({
         from: account,
-        gasPrice: 20,
-        gas: '1000000',
+        gasPrice: parseInt(gasprice * 1000000000).toString(),
+        gas: '200000',
         to: address,
         value: "100000000000000000",
         data: data
@@ -28,13 +28,13 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         result.status = 0;
         result.finishTime = Date.now();
         result.latency = result.finishTime - result.startTime;
-        winston.info(`${nodeName}: TX confirmed number ${confirmationNumber}`);
-        return Promise.resolve(result);
+        winston.info(`${nodeName}: TX confirmed number ${JSON.stringify(receipt)}`);
     }).on('error', function (error) {
         isTimeout = false;
-        winston.error(`${nodeName}: TX error ${JSON.stringify(error)}`);
-        result.finishTime = Date.now();
-        result.latency = result.finishTime - result.startTime;
+        winston.error(`${nodeName}: TX error ${error}`);
+    }).then(function (receipt) {
+        return Promise.resolve(result);
+    }, function (error) {
         return Promise.resolve(result);
     });
     let timeout = new Promise(function(resolve, reject){
