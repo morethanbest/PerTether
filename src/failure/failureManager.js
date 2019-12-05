@@ -26,7 +26,7 @@ function initFailures(_nodeConfig, _clientType, _nodeAccounts, _rate, _normalCon
     results = _results;
     for (let i = 0; i < failures.length; i++) {
         //todo 其他类型也可能需要启动线程
-        if (failures[i].type === 'application-normal' || failures[i].type === 'smartContract')
+        if (failures[i].type === 'smartContract')
         failureClient.startClients(nodeConfig.length, failures[i].label);
     }
 }

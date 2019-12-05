@@ -110,7 +110,7 @@ function launchClient(results, label) {
 }
 
 module.exports.controlRateIndex = function(rateControlIndex, label) {
-    for(let id in processes) {
+    for(let id in processes[label]) {
         let msg = {
             type: 'rateControl',
             rateControlIndex: rateControlIndex,
