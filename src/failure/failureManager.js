@@ -52,6 +52,7 @@ async function injectFailure(failure) {
         case 'smartContract':
             //todo 控制原client的请求速率
             clientControl.controlRateIndex(0.5);
+            failureClient.controlRateIndex(0.5);
             await failureClient.startFailure(nodeConfig, nodeAccounts, rate, failure.type, failure.duration,
                 contract.getContractConfig(failure.contractName), results, failure.label, failure.level);
             failure.finishTime = Date.now();

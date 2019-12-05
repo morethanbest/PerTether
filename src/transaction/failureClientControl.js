@@ -109,6 +109,17 @@ function launchClient(results, label) {
     });
 }
 
+module.exports.controlRateIndex = function(rateControlIndex) {
+    for(let id in processes) {
+        let msg = {
+            type: 'rateControl',
+            rateControlIndex: rateControlIndex,
+        };
+        let client = processes[id];
+        client.obj.send(msg);
+    }
+};
+
 function stop(label) {
     for(let pid in processes[label]) {
         processes[label][pid].obj.kill();
