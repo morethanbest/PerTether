@@ -1,1 +1,1 @@
-{"difficulty": ["0x123456", "0x123456"], "gasLimit": ["21000"], "nodeCount": 4, "startUpType": "docker", "clientType": "Geth", "minerCount": 1, "startTps": 2, "finishTps": 128, "duration": 60, "smartContract": "HelloWorld"}
+{"difficulty": ["0"], "gasLimit": ["0"], "nodeCount": 4, "startUpType": "docker", "clientType": "geth", "minerCount": 2, "user": "wxy", "startTps": 0, "duration": 0, "smartContract": "", "status": "pending", "startTime": 1583571691, "failure": [[{"type": "", "startAfter": 0, "duration": 0, "level": 1, "label": "", "nodeName": ""}]]}

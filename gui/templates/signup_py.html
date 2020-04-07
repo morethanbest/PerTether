@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Test Configuration</title>
+    <title>Login</title>
     <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
@@ -39,16 +39,22 @@
             <ul class="nav flex-column">
 
               <li class="nav-item">
-                <a class="nav-link " href="/experiment">
+                <a class="nav-link " href="#">
                   <i class="material-icons">table_chart</i>
-                  <span>Ethereum Configuration</span>
+                  <span>Introduction</span>
                 </a>
               </li>
                 <li class="nav-item">
-							  <a class="nav-link " href="/testConfig">
-							    <i class="material-icons">note_add</i>
-							    <span>Test Configuration</span>
-							  </a>
+                  <a class="nav-link " href="/login">
+                    <i class="material-icons">note_add</i>
+                    <span>Login</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="#">
+                    <i class="material-icons">note_add</i>
+                    <span>Sign up</span>
+                  </a>
                 </li>
             </ul>
           </div>
@@ -67,20 +73,21 @@
                   </div>
                   <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
               </form>
-              <ul class="navbar-nav border-left flex-row " style="float: right">
-                <li class="nav-item ">
-                  <a class="nav-link text-nowrap px-3" href="/list" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar  mr-2" src="../static/images/avatars/experiment.png" alt="User Avatar">
-                    <span class="d-none d-md-inline-block">Test List</span>
-                  </a>
+<!--              <ul class="navbar-nav border-left flex-row " style="float: right">
+                <li class="nav-item border-right dropdown notifications">
+                  <a class="nav-link text-nowrap px-3" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                      <img class="user-avatar  mr-2" src="images/avatars/file.png" alt="User Avatar">
+                      <span class="d-none d-md-inline-block">File</span>
+                    </a>
+                  </li>
                 </li>
                 <li class="nav-item ">
-                  <a class="nav-link text-nowrap px-3" href="/logout" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar mr-2" src="../static/images/avatars/experiment.png" alt="User Avatar">
-                    <span class="d-none d-md-inline-block">Logout</span>
+                  <a class="nav-link text-nowrap px-3" href="experiment.html" role="button" aria-haspopup="true" aria-expanded="false">
+                    <img class="user-avatar  mr-2" src="images/avatars/experiment.png" alt="User Avatar">
+                    <span class="d-none d-md-inline-block">Experiment</span>
                   </a>
                 </li>
-              </ul>
+              </ul> -->
             </nav>
           </div>
           <!-- / .main-navbar -->
@@ -89,128 +96,90 @@
             <div class="page-header row no-gutters py-4 mb-3 border-bottom">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <!--<span class="text-uppercase page-subtitle">Overview</span>-->
-                <h3 class="page-title">Configuration</h3>
+                <h3 class="page-title">Sign Up</h3>
                 <!--(Tips:If you enter multiple values, please separate them with spaces.)-->
               </div>
             </div>
             <!-- End Page Header -->
               <div class="row" style="display: block">
-                  <form name="input" action="/testConfig/" method="post">
                   <div class="col-lg-12">
+                  <form name="input" action="/user_signup/" method="post">
                     <div class="card card-small mb-4">
                       <ul class="list-group list-group-flush">
                         <li class="list-group-item p-3">
                           <div class="row">
                             <div class="col">
                                 <div class="form-row">
-                                    <span><b>&nbsp;&nbsp;Performance Test Configuration</b></span>
+                                    <span><b>&nbsp; {{ err_msg }}</b></span>
                                 </div>
                                 <br>
                                   <div class="form-row">
-                                      <span><b>&nbsp;&nbsp;Request Rate(tx/s)</b></span>
+                                      <span><b>&nbsp; Username</b></span>
                                   </div>
                                 <div class="form-row">
                                   <div class="form-group col-md-12">
-                                      <input type="number" name="startTps" min="2" class="form-control" id="startTps" placeholder="Request Rate" required="required">
+                                      <input type="text" name="username" min="2" class="form-control" id="username" placeholder="Username" required="required">
                                   </div>
                                 </div>
                                   <div class="form-row">
-                                      <span><b>&nbsp;&nbsp;Duration(s)</b></span>
+                                      <span><b>&nbsp; Email</b></span>
                                   </div>
                                 <div class="form-row">
                                   <div class="form-group col-md-12">
-                                      <input type="number" name="duration" min="60" step="60" class="form-control" id="duration" placeholder="Duration" required="required">
+                                      <input type="email" name="email" min="2" class="form-control" id="username" placeholder="Username" required="required">
                                   </div>
                                 </div>
                                   <div class="form-row">
-                                      <span><b>&nbsp;&nbsp;Smart Contract</b></span>
+                                      <span><b>&nbsp;&nbsp;First Name</b></span>
                                   </div>
+                                <div class="form-row">
+                                  <div class="form-group col-md-12">
+                                      <input type="text" name="first_name" class="form-control" id="first_name" placeholder="First Name" required="required">
+                                  </div>
+                                </div>
                                   <div class="form-row">
-                                      <div class="form-group col-md-12">
-                                            <select name="smartContract" id="smartContract"  class="form-control">
-                                                <option value="HelloWorld">HelloWorld</option>
-                                            </select>
-                                    </div>
+                                      <span><b>&nbsp;&nbsp;Last Name</b></span>
                                   </div>
+                                <div class="form-row">
+                                  <div class="form-group col-md-12">
+                                      <input type="text" name="last_name" class="form-control" id="password" placeholder="Last Name" required="required">
+                                  </div>
+                                </div>
+                                  <div class="form-row">
+                                      <span><b>&nbsp;&nbsp;Password</b></span>
+                                  </div>
+                                <div class="form-row">
+                                  <div class="form-group col-md-12">
+                                      <input type="password" name="password" class="form-control" id="password" placeholder="Password" required="required">
+                                  </div>
+                                </div>
+                                  <div class="form-row">
+                                      <span><b>&nbsp;&nbsp;Confirm Password</b></span>
+                                  </div>
+                                <div class="form-row">
+                                  <div class="form-group col-md-12">
+                                      <input type="password" name="password" class="form-control" id="password" placeholder="Password" required="required">
+                                  </div>
+                                </div>
+                              <div class="form-row">
+                                  <span><b>&nbsp;&nbsp;User Type</b></span>
+                              </div>
+                              <div class="form-row">
+                                  <div class="form-group col-md-12">
+                                    <select name="type" id="type"  class="form-control">
+                                        <option value="DEV/OPS">DEV/OPS</option>
+                                        <option value="USER">USER</option>
+                                    </select>
+                                </div>
+                              </div>
+                              <button type='submit' id='nextbtn' class='btn btn-accent' style="width: 100px;float: right">Sign up</button>
                             </div>
                           </div>
                         </li>
                       </ul>
                     </div>
-                  </div>
-                <div class="col-lg-12">
-                    <div class="card card-small mb-4">
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item p-3">
-                          <div class="row">
-                            <div class="col">
-                                <div class="form-row">
-                                    <span><b>&nbsp;&nbsp;Failure Configuration</b></span>
-                                </div>
-                                <br>
-                                  <div class="form-row">
-                                      <span><b>&nbsp;&nbsp;Type</b></span>
-                                  </div>
-                                <div class="form-row">
-                                      <div class="form-group col-md-12">
-                                            <select name="type" id="type"  class="form-control">
-                                                <option value="nodeFailure">Node Failure</option>
-                                                <option value="smartContract">Bad Performance Smart Contract</option>
-                                                <option value="application-normal">Traffic Spike</option>
-                                                <option value="network-packageLoss">Package Loss</option>
-                                                <option value="nodeFailure">nodeFailure</option>
-                                            </select>
-                                    </div>
-                                </div>
-                                  <div class="form-row">
-                                      <span><b>&nbsp;&nbsp;Start Time(s)</b></span>
-                                  </div>
-                                <div class="form-row">
-                                  <div class="form-group col-md-12">
-                                      <input type="number" name="startAfter" min="4" class="form-control" id="startAfter" placeholder="start time" required="required">
-                                  </div>
-                                </div>
-                                  <div class="form-row">
-                                      <span><b>&nbsp;&nbsp;Duration(s)</b></span>
-                                  </div>
-                                <div class="form-row">
-                                  <div class="form-group col-md-12">
-                                      <input type="number" name="failure_duration" min="60" step="60" class="form-control" id="failure_duration" placeholder="Duration" required="required">
-                                  </div>
-                                </div>
-                                  <div class="form-row">
-                                        <span><b>&nbsp;&nbsp;Level</b></span>
-                                  </div>
-                                  <div class="form-row">
-                                      <div class="form-group col-md-12">
-                                    <input type="number" name="level" min="1" max="3" class="form-control" id="level" placeholder="level">
-                                      </div>
-                                  </div>
-                                <div class="form-row">
-                                        <span><b>&nbsp;&nbsp;Node Name</b></span>
-                                  </div>
-                                  <div class="form-row">
-                                      <div class="form-group col-md-12">
-                                    <input type="text" name="nodeName" class="form-control" id="nodeName" placeholder="nodeName">
-                                      </div>
-                                  </div>
-                                  <div class="form-row">
-                                        <span><b>&nbsp;&nbsp;Label</b></span>
-                                  </div>
-                                  <div class="form-row">
-                                      <div class="form-group col-md-12">
-                                    <input type="text" name="label" max="4" class="form-control" id="label" placeholder="label" required="required">
-                                      </div>
-                                  </div>
-                                    <br>
-                                <button type="submit" class="btn btn-accent" style="width: 100px">Start</button>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
-                </div>
               </form>
+              </div>
 
               </div>
             <!-- End Default Light Table -->

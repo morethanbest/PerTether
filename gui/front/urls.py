@@ -15,17 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
 from frontApp import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('deal/',views.deal),
-    path('experiment/',views.experiment),
-    path('throughput/',views.throughput),
-    path('latency/',views.latency),
-    path('detailedLatency/',views.detailedLatency),
-    path('txCompletion/',views.txCompletion),
-    path('testConfig/',views.testConfig),
-    path('download/',views.download),
-    path('load/',views.load),
+    url('admin/', admin.site.urls),
+    url('deal/', views.deal),
+    url('experiment/', views.experiment),
+    url('detailedResult/', views.detailed_result),
+    url('list/', views.task_list, name='task_list'),
+    url('testConfig/', views.test_config),
+    url('load/', views.load),
+    url('user_login/', views.login),
+    url('user_signup/', views.signup),
+    url('login/', views.login_view, name='login_view'),
+    url('signup/', views.signup_view),
+    url('logout/', views.logout),
+    url('delete/', views.delete),
+    url('profile/', views.profile),
 ]

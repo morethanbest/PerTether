@@ -2,13 +2,16 @@
 	"difficulty": ["0x0"],
 	"gasLimit": [10000000],
 	"nodeCount": 4,
-	"minerCount": 2,
+	"minerCount": 1,
 	"startUpType": "docker",
 	"clientType": "geth",
-    "startTps": 32,
-    "finishTps": 32,
+    "startTps": 1,
     "duration": 300,
     "smartContract": "HelloWorld",
+	"loadConfig": {
+		"period": 180,
+		"doubleTimes": 7
+	},
 	"failures": [
 		{
 			"type": "nodeFailure",

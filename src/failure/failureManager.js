@@ -50,7 +50,6 @@ async function injectFailure(failure) {
             failure.status = 'stopped';
             break;
         case 'smartContract':
-            //todo 控制原client的请求速率
             clientControl.controlRateIndex(0.5);
             failureClient.controlRateIndex(0.5, failure.label);
             await failureClient.startFailure(nodeConfig, nodeAccounts, rate, failure.type, failure.duration,
@@ -59,7 +58,6 @@ async function injectFailure(failure) {
             await failureClient.stop(failure.label);
             failure.status = 'stopped';
             break;
-            //todo network 故障等级
         case 'nodeFailure':
             await consensus.nodeFailure(clientType, failure.nodeName, failure.label);
             break;
@@ -70,7 +68,6 @@ async function injectFailure(failure) {
             await network.networkLatency(failure.duration, failure.nodeName, failure.level * failure.level * 1000, failure.label);
             break;
     }
-
 }
 
 async function stopFailure(failure) {

@@ -6,7 +6,6 @@ services:
     container_name: bootnode
     image: ethereum/client-go:alltools-v1.8.26
     command: bootnode -nodekey=bootnode.key -addr 172.19.0.254:30301
-#    command: echo "1234" > a.log&
     working_dir: /data
     volumes:
     - ./tmp/bootnode:/data

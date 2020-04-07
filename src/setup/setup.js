@@ -10,6 +10,20 @@ const contractInfo = require('../transaction/contractInfo');
 const providers = require('../util/providers');
 const fs = require('fs');
 
+
+module.exports.start = async function (configObject) {
+    let nodesConfig = configObject.nodes;
+    await providers.initProviders(nodesConfig);
+    let promises = [];
+    for (let i = 0; i < configObject.contracts.length; i++) {
+        promises.push(install.run(nodesConfig[0].nodeName, configObject.contracts[i].path, configObject.contracts[i].name));
+    }
+    let contracts = await Promise.all(promises);
+    for (let i = 0; i < configObject.contracts.length; i++) {
+        contractInfo.newContract(configObject.contracts[i], contracts[i]);
+    }
+};
+
 module.exports.startTestChain = async function startTestChain(client) {
     winston.info(`Start test blockchain, client type: ${client} ...`);
     if (client === 'geth') {
@@ -31,18 +45,6 @@ module.exports.stopTestChain = async function stopTestChain(client) {
     return 1;
 };
 
-module.exports.start = async function (configObject) {
-    let nodesConfig = configObject.nodes;
-    await providers.initProviders(nodesConfig);
-    let promises = [];
-    for (let i = 0; i < configObject.contracts.length; i++) {
-        promises.push(install.run(nodesConfig[0].nodeName, configObject.contracts[i].path, configObject.contracts[i].name));
-    }
-    let contracts = await Promise.all(promises);
-    for (let i = 0; i < configObject.contracts.length; i++) {
-        contractInfo.newContract(configObject.contracts[i], contracts[i]);
-    }
-};
 
 module.exports.writeGenesis = function (client, difficulty, gasLimit, nodeCount) {
     if (client === 'Geth') {

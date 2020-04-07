@@ -7,6 +7,7 @@ const util = require('./util/util');
 const winston = require('winston');
 const contract = require('./transaction/contractInfo');
 const client = require('./transaction/clientControl');
+const load = require('./transaction/loadControl');
 const failureManager = require('./failure/failureManager');
 const dataAnalysis = require('./dataAnalysis/processData');
 const path = require('path');
@@ -57,16 +58,13 @@ async function run(configFile, resultPath) {
     let gasLimits = absConfigObject.gasLimit;
     let clientType = absConfigObject.clientType;
     let startRate = absConfigObject.startTps;
-    let finishRate = absConfigObject.finishTps;
     let duration = absConfigObject.duration;
     let smartContract = absConfigObject.smartContract;
 
     let configNodeCount = absConfigObject.nodeCount;
     let minerCount = absConfigObject.minerCount;
-    if (configNodeCount < minerCount * 2){
-        winston.error('Node count should not less than double time miner count.');
-        return;
-    }
+    let loadConfig = absConfigObject.loadConfig;
+
     if(minerCount === 'undefined')
         minerCount = 1;
     for (let i = 0; i < configNodeCount; i++) {
@@ -104,11 +102,7 @@ async function run(configFile, resultPath) {
             let nodeCount = configObject.nodes.length;
 
             client.startClients(nodeCount);
-            // let testConfig = configObject.tests;
             let rate = startRate;
-            // let rate = testConfig.startRate;
-            // let finishRate = testConfig.finishRate;
-            // let duration = testConfig.duration;
             let eachClientRate = rate / nodeCount;
             let finalResult = {
                 timestamp: 0,
@@ -121,22 +115,20 @@ async function run(configFile, resultPath) {
                 detailedLatency: [],
                 failureInfo: null
             };
-            while (eachClientRate <= finishRate / nodeCount) {
-                let results = [];
-                failureManager.initFailures(configObject.nodes, clientType, account.getAccounts(),
-                    eachClientRate, contract.getContractConfig(smartContract), failureConfigObject.failure, results);
-                failureManager.startFailureTimer();
-                await client.startTest(configObject.nodes, account.getAccounts(), eachClientRate, duration, contract.getContractConfig(smartContract), results);
-                let data = dataAnalysis.processResult(results, rate, duration);
-                winston.info(`Result rate ${eachClientRate * nodeCount} ${data}`);
-                finalResult.failureInfo = failureManager.getCurrentFailureInfo();
-                finalResult.throughput.push(data.throughput);
-                finalResult.generalLatency.push(data.latency);
-                finalResult.txCompeltion.push(data.gasCompletion);
-                // finalResult.gasCompletion.push(data.gasCompletion);
-                finalResult.detailedLatency.push(data.gasLatency);
-                eachClientRate *= 2;
-            }
+            let results = [];
+            failureManager.initFailures(configObject.nodes, clientType, account.getAccounts(),
+                eachClientRate, contract.getContractConfig(smartContract), failureConfigObject.failure, results);
+            failureManager.startFailureTimer();
+            load.startLoadTimer(loadConfig);
+            await client.startTest(configObject.nodes, account.getAccounts(), eachClientRate, duration, contract.getContractConfig(smartContract), results);
+            let data = dataAnalysis.processResult(results, rate, duration);
+            winston.info(`Result rate ${eachClientRate * nodeCount} ${data}`);
+            finalResult.failureInfo = failureManager.getCurrentFailureInfo();
+            finalResult.throughput.push(data.throughput);
+            finalResult.generalLatency.push(data.latency);
+            finalResult.txCompeltion.push(data.gasCompletion);
+            // finalResult.gasCompletion.push(data.gasCompletion);
+            finalResult.detailedLatency.push(data.gasLatency);
             client.stop();
             finalResult.timestamp = Math.floor(Date.now()/1000);
             tFinalResult.result.push(finalResult);
@@ -144,7 +136,8 @@ async function run(configFile, resultPath) {
             if (stopStatus !== 0)
                 winston.error('Docker stopped failed. Please stop manually.');
             let finalResultStr = JSON.stringify(finalResult);
-            fs1.writeFileSync(path.join(resultPath, `report${chainCount}.json`), finalResultStr);
+            if (resultPath !== 'undefined')
+                fs1.writeFileSync(path.join(resultPath, `report${chainCount}.json`), finalResultStr);
             chainCount ++;
         }
     }

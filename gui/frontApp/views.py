@@ -1,19 +1,25 @@
+import math
+
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
 from django.http import StreamingHttpResponse
-import json
-import urllib
-from urllib.request import urlretrieve
-import shutil
+from django.shortcuts import redirect
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
-import zipfile
+import sys
 import os
 import zipstream
 import pandas as pd
 import time
-import threading
-import subprocess
-import execjs
+import time
+
+from db import db_helper
+from data import data_process
+from user import auth
+from util import util
+from config import validate
 
 
 class ZipUtilities:
@@ -42,319 +48,194 @@ class ZipUtilities:
 
 
 # 将请求定位到index.html文件中
+@login_required
 def experiment(request):
     return render(request, 'experiment_py.html')
 
 
-def testConfig(request):
-    startTps = 0
-    finishTps = 0
+@login_required
+def test_config(request):
+    username = request.user.username
+    start_tps = 0
     duration = 0
-    smartcontract = ""
-    numArr = []
-    labelArr = []
+    smart_contract = ""
+    failure_type = ""
+    start_time = 0
+    failure_duration = 0
+    level = 1
+    xxx_name = ""
+    label = ""
     if request.method == "POST":
-        startTps = int(request.POST.get("startTps", None))
-        finishTps = int(request.POST.get("finishTps", None))
+        start_tps = int(request.POST.get("startTps", None))
         duration = int(request.POST.get("duration", None))
-        smartcontract = request.POST.get("smartcontract", None)
-    if (finishTps != 0):
-        with open("static/json/config0.json", 'r') as load_f:
-            load_dict = json.load(load_f)
-        load_dict['startTps'] = startTps
-        load_dict['finishTps'] = finishTps
-        load_dict['duration'] = duration
-        load_dict['smartContract'] = smartcontract
-        file = open('static/json/config.json', 'w', encoding='utf-8')
-        json.dump(load_dict, file, ensure_ascii=False)
-        file.close()
-        i = 1
-        start = startTps
-        while (start <= finishTps):
-            labelArr.append(i)
-            numArr.append(start)
-            i = i + 1
-            start = start * 2
-        labelArr[-1] = str(labelArr[-1]) + 'times'
-        os.chdir('..')
-        result = subprocess.run(['which', 'node'],
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE)
-        nodeCmd = result.stdout.decode("utf-8").replace('\n', '')
-        pnode = subprocess.Popen(
-            [nodeCmd, 'src/main.js', '-p', 'gui/static/json/', '-c', 'gui/static/json/config.json'],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        os.chdir('gui')
-    return render(request, 'testConfig_py.html', {"labelArr": labelArr, "numArr": numArr})
+        smart_contract = request.POST.get("smartContract", None)
+        failure_type = request.POST.get("type", None)
+        start_time = int(request.POST.get("startAfter", None))
+        xxx_name = request.POST.get("nodeName", None)
+        failure_duration = int(request.POST.get("failure_duration", None))
+        level = int(request.POST.get("level", None))
+        label = request.POST.get("label", None)
+    test_config = util.read_json('static/json/config.json')
+    test_config['user'] = username
+    test_config['startTps'] = start_tps
+    test_config['duration'] = duration
+    test_config['smartContract'] = smart_contract
+    test_config['status'] = 'pending'
+    test_config['startTime'] = int(time.time())
+    if not validate.validate_test_config(test_config):
+        return render(request, 'testConfig_py.html', {'err_msg': 'Invalid test config.'})
+    failure_config = [{
+        'type': failure_type,
+        'startAfter': start_time,
+        'duration': failure_duration,
+        'level': level,
+        'label': label
+    }]
+    xxx_name_label = "nodeName"
+    if failure_type == "smartContract":
+        xxx_name_label = "contractName"
+    failure_config[0][xxx_name_label] = xxx_name
+    if not validate.validate_failure_config(failure_config):
+        return render(request, 'testConfig_py.html', {'err_msg': 'Invalid failure config.'})
+    util.write_yaml('static/json/failure.yaml', {'failure': failure_config})
+    test_config['failure'] = [failure_config]
+    util.write_json('static/json/config.json', test_config)
+    db_helper.insert(test_config)
+    return render(request, 'testConfig_py.html'
+                  , {'msg': 'All config valid.'})
 
 
-def throughput(request):
-    with open("static/json/config.json", 'r') as load_f:
-        load_dict = json.load(load_f)
-        m = len(load_dict['gasLimit'])
-        n = len(load_dict['difficulty'])
-        difficulty = load_dict['difficulty']
-        gaslimit = load_dict['gasLimit']
-    num = m * n
-    exists = []
-    labelAll = []
-    valueAll = []
-    timestampAll = []
-    for i in range(num):
-        if os.path.exists("static/json/report" + str(i) + ".json"):
-            exists.append("T")
-            with open("static/json/report" + str(i) + ".json", 'r') as load_data:
-                info = json.load(load_data)
-            throughputArr = info["throughput"]
-            labels = []
-            values = []
-            for j in range(len(throughputArr)):
-                labels.append(str(throughputArr[j][0]) + "tps")
-                values.append(round(throughputArr[j][1], 2))
-            labelAll.append(labels)
-            valueAll.append(values)
-            timeStamp = info['timestamp']
-            timeArray = time.localtime(timeStamp)
-            otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-            timestampAll.append(otherStyleTime)
+@login_required
+def detailed_result(request):
+    id = ''
+    show_type, next_type = 'smooth', 'raw'
+    if request.method == "GET":
+        id = request.GET.get("id", None)
+        show_type = request.GET.get('type', 'smooth')
+    data = db_helper.get_one(id)
+    failure, duration, request_rate = data['failure'], data['duration'], data['startTps']
+    mean, interval = 7, int(duration / 50)
+    if show_type == 'raw':
+        mean, interval = math.ceil(duration / 300) * 2 - 1, int(duration / 300)
+        next_type = 'smooth'
+    data['id'] = id
+    data['result']['throughput'] = data_process.proc_data(data['result']['throughput'], mean, interval)
+    data['result']['latency'] = data_process.proc_data(data['result']['latency'], mean, interval)
+    data['result']['success_rate'] = data_process.success_rate(request_rate, data['result']['throughput'])
+    total_mean_throughput = data_process.get_mean_by_period(data['result']['throughput'], 0, -1)
+    total_mean_latency = data_process.get_mean_by_period(data['result']['latency'], 0, -1)
+    total_mean_success_rate = data_process.get_mean_by_period(data['result']['success_rate'], 0, -1)
+    total_median_throughput = data_process.get_median_by_period(data['result']['throughput'], 0, -1)
+    total_median_latency = data_process.get_median_by_period(data['result']['latency'], 0, -1)
+    total_median_success_rate = data_process.get_median_by_period(data['result']['success_rate'], 0, -1)
+    
+    failure_metrics = []
+    before, after = sys.maxsize, 0
+    for f in failure:
+        f_s = f['startAfter']
+        f_f = f_s + f['duration']
+        before = min(before, f_s)
+        after = max(after, f_f)
+        f_tmp = {
+            'label': f['label'],
+            'type': f['type'],
+            'level': f['level'],
+            'start': f_s,
+            'finish': f_f
+        }
+        f_mean_t = data_process.get_mean_by_period(data['result']['throughput'], f_s, f_f)
+        f_mean_l = data_process.get_mean_by_period(data['result']['latency'], f_s, f_f)
+        f_mean_s = data_process.get_mean_by_period(data['result']['success_rate'], f_s, f_f)
+        f_median_t = data_process.get_median_by_period(data['result']['throughput'], f_s, f_f)
+        f_median_l = data_process.get_median_by_period(data['result']['latency'], f_s, f_f)
+        f_median_s = data_process.get_median_by_period(data['result']['success_rate'], f_s, f_f)
+        f_tmp['metrics'] = [f_mean_t, f_mean_l, f_mean_s, f_median_t, f_median_l, f_median_s]
+        failure_metrics.append(f_tmp)
 
-        else:
-            exists.append("F")
-            labels = []
-            values = []
-            labelAll.append(labels)
-            valueAll.append(values)
-            timestampAll.append('')
-    # print(len(labelAll[1]))
-    # print(valueAll)
-    return render(request, 'list_throughput_py.html',
-                  {"existsArr": exists, "difficulty": difficulty, "gaslimit": gaslimit, "labelAll": labelAll,
-                   "valueAll": valueAll, "timestampAll": timestampAll})
+    before_mean_throughput = data_process.get_mean_by_period(data['result']['throughput'], 0, before)
+    before_mean_latency = data_process.get_mean_by_period(data['result']['latency'], 0, before)
+    before_mean_success_rate = data_process.get_mean_by_period(data['result']['success_rate'], 0, before)
+    before_median_throughput = data_process.get_median_by_period(data['result']['throughput'], 0, before)
+    before_median_latency = data_process.get_median_by_period(data['result']['latency'], 0, before)
+    before_median_success_rate = data_process.get_median_by_period(data['result']['success_rate'], 0, before)
 
+    after_mean_throughput = data_process.get_mean_by_period(data['result']['throughput'], after, -1)
+    after_mean_latency = data_process.get_mean_by_period(data['result']['latency'], after, -1)
+    after_mean_success_rate = data_process.get_mean_by_period(data['result']['success_rate'], after, -1)
+    after_median_throughput = data_process.get_median_by_period(data['result']['throughput'], after, -1)
+    after_median_latency = data_process.get_median_by_period(data['result']['latency'], after, -1)
+    after_median_success_rate = data_process.get_median_by_period(data['result']['success_rate'], after, -1)
 
-def latency(request):
-    with open("static/json/config.json", 'r') as load_f:
-        load_dict = json.load(load_f)
-        m = len(load_dict['gasLimit'])
-        n = len(load_dict['difficulty'])
-        difficulty = load_dict['difficulty']
-        gaslimit = load_dict['gasLimit']
-    num = m * n
-    exists = []
-    labelAll = []
-    valueAll = []
-    timestampAll = []
-    for i in range(num):
-        if os.path.exists("static/json/report" + str(i) + ".json"):
-            exists.append("T")
-            with open("static/json/report" + str(i) + ".json", 'r') as load_data:
-                info = json.load(load_data)
-            latencyArr = info["generalLatency"]
-            labels = []
-            values = []
-            for j in range(len(latencyArr)):
-                labels.append(str(latencyArr[j][0]) + "tps")
-                values.append(round(latencyArr[j][1], 2))
-            labelAll.append(labels)
-            valueAll.append(values)
-            # timestampAll.append(info['timestamp'])
-            timeStamp = info['timestamp']
-            timeArray = time.localtime(timeStamp)
-            otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-            timestampAll.append(otherStyleTime)
-        else:
-            exists.append("F")
-            labels = []
-            values = []
-            labelAll.append(labels)
-            valueAll.append(values)
-            timestampAll.append('')
-    # print(len(labelAll[1]))
-    # print(valueAll)
-    # print(timestampAll)
-    return render(request, 'list_latency_py.html',
-                  {"existsArr": exists, "difficulty": difficulty, "gaslimit": gaslimit, "labelAll": labelAll,
-                   "valueAll": valueAll, "timestampAll": timestampAll})
+    return render(request, 'list_detailedLatency_py.html', {'test': data, 'next_type': next_type, 'before': before,
+    'after': after, 'total_metrics': [
+        total_mean_throughput, total_mean_latency, total_mean_success_rate,
+        total_median_throughput, total_median_latency, total_median_success_rate
+    ], 'before_metrics': [
+        before_mean_throughput, before_mean_latency, before_mean_success_rate,
+        before_median_throughput, before_median_latency, before_median_success_rate
+    ], 'after_metrics': [
+        after_mean_throughput, after_mean_latency, after_mean_success_rate,
+        after_median_throughput, after_median_latency, after_median_success_rate
+    ], 'failure_metrics': failure_metrics})
 
 
-def detailedLatency(request):
-    with open("static/json/config.json", 'r') as load_f:
-        load_dict = json.load(load_f)
-        m = len(load_dict['gasLimit'])
-        n = len(load_dict['difficulty'])
-        difficulty = load_dict['difficulty']
-        gaslimit = load_dict['gasLimit']
-    num = m * n
-    exists = []
-    labelAll = []
-    valueAll = []
-    throughputAll = []
-    maxAll = []
-    timestampAll = []
-    for i in range(num):
-        if os.path.exists("static/json/report" + str(i) + ".json"):
-            exists.append("T")
-            with open("static/json/report" + str(i) + ".json", 'r') as load_data:
-                info = json.load(load_data)
-            compeltionArr = info["detailedLatency"]
-            throughput = []
-            labels = []
-            values = []
-            maxvalues = []
-            for i in range(len(compeltionArr)):
-                throughput.append(compeltionArr[i][0][0])
-            for i in range(11):
-                if i == 10:
-                    labels.append(str(compeltionArr[0][i][1]) + 'gwei')
-                else:
-                    labels.append(compeltionArr[0][i][1])
-            for i in range(len(compeltionArr)):
-                v = []
-                for j in range(11):
-                    if compeltionArr[i][j][2] is None:
-                        compeltionArr[i][j][2] = 0
-                    v.append(round(compeltionArr[i][j][2], 2))
-                values.append(v)
-                maxvalues.append(max(v))
-            labelAll.append(labels)
-            valueAll.append(values)
-            throughputAll.append(throughput)
-            maxAll.append(maxvalues)
-            # timestampAll.append(info['timestamp'])
-            timeStamp = info['timestamp']
-            timeArray = time.localtime(timeStamp)
-            otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-            timestampAll.append(otherStyleTime)
-        else:
-            exists.append("F")
-            labels = []
-            values = []
-            throughput = []
-            maxvalues = []
-            labelAll.append(labels)
-            valueAll.append(values)
-            throughputAll.append(throughput)
-            maxAll.append(maxvalues)
-            timestampAll.append('')
-    return render(request, 'list_detailedLatency_py.html',
-                  {"existsArr": exists, "difficulty": difficulty, "gaslimit": gaslimit, "labelAll": labelAll,
-                   "valueAll": valueAll, "throughputAll": throughputAll, "maxAll": maxAll,
-                   "timestampAll": timestampAll})
-
-
-def txCompletion(request):
-    with open("static/json/config.json", 'r') as load_f:
-        load_dict = json.load(load_f)
-        m = len(load_dict['gasLimit'])
-        n = len(load_dict['difficulty'])
-        difficulty = load_dict['difficulty']
-        gaslimit = load_dict['gasLimit']
-    num = m * n
-    exists = []
-    labelAll = []
-    valueAll = []
-    throughputAll = []
-    maxAll = []
-    timestampAll = []
-    for i in range(num):
-        if os.path.exists("static/json/report" + str(i) + ".json"):
-            exists.append("T")
-            with open("static/json/report" + str(i) + ".json", 'r') as load_data:
-                info = json.load(load_data)
-            compeltionArr = info["txCompeltion"]
-            throughput = []
-            labels = []
-            values = []
-            maxvalues = []
-            for i in range(len(compeltionArr)):
-                throughput.append(compeltionArr[i][0][0])
-            for i in range(11):
-                if i == 10:
-                    labels.append(str(compeltionArr[0][i][1]) + 'gwei')
-                else:
-                    labels.append(compeltionArr[0][i][1])
-            for i in range(len(compeltionArr)):
-                v = []
-                for j in range(11):
-                    if compeltionArr[i][j][2] is None:
-                        compeltionArr[i][j][2] = 0
-                    v.append(round(compeltionArr[i][j][2], 2))
-                values.append(v)
-                maxvalues.append(max(v))
-            labelAll.append(labels)
-            valueAll.append(values)
-            throughputAll.append(throughput)
-            maxAll.append(maxvalues)
-            # timestampAll.append(info['timestamp'])
-            timeStamp = info['timestamp']
-            timeArray = time.localtime(timeStamp)
-            otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-            timestampAll.append(otherStyleTime)
-        else:
-            exists.append("F")
-            labels = []
-            values = []
-            throughput = []
-            maxvalues = []
-            labelAll.append(labels)
-            valueAll.append(values)
-            throughputAll.append(throughput)
-            maxAll.append(maxvalues)
-            timestampAll.append('')
-    # print(throughputAll)
-    # print(valueAll)
-    return render(request, 'list_txCompeltion_py.html',
-                  {"existsArr": exists, "difficulty": difficulty, "gaslimit": gaslimit, "labelAll": labelAll,
-                   "valueAll": valueAll, "throughputAll": throughputAll, "maxAll": maxAll,
-                   "timestampAll": timestampAll})
-
-
-def deal(request):
-    difficulty = [];
-    gaslimit = [];
-    start_type = "";
-    client_type = "";
-    nodeCount = 0;
-    minerCount = 0
-    if request.is_ajax():
-        difficulty1 = request.POST.get("Difficulty1", None)
-        difficulty2 = request.POST.get("Difficulty2", None)
-        difficulty3 = request.POST.get("Difficulty3", None)
-        if difficulty1 != "":
-            difficulty.append(difficulty1)
-        if difficulty2 != "":
-            difficulty.append(difficulty2)
-        if difficulty3 != "":
-            difficulty.append(difficulty3)
-        gaslimit1 = request.POST.get("gaslimit1", None)
-        gaslimit2 = request.POST.get("gaslimit2", None)
-        gaslimit3 = request.POST.get("gaslimit3", None)
-        if gaslimit1 != "":
-            gaslimit.append(gaslimit1)
-        if gaslimit2 != "":
-            gaslimit.append(gaslimit2)
-        if gaslimit3 != "":
-            gaslimit.append(gaslimit3)
-        start_type = request.POST.get("start_type", None)
-        client_type = request.POST.get("client_type", None)
-        nodeCount = int(request.POST.get("node_count", None))
-        minerCount = int(request.POST.get("miner_count", None))
-        if (len(difficulty) != 0):
-            data = {}
-            data['difficulty'] = difficulty;
-            data['gasLimit'] = gaslimit;
-            data['nodeCount'] = nodeCount;
-            data['startUpType'] = start_type;
-            data['clientType'] = client_type;
-            data['minerCount'] = minerCount
-            file = open('static/json/config0.json', 'w', encoding='utf-8')
-            json.dump(data, file, ensure_ascii=False)
-            file.close()
-            ret = {"difficulty": difficulty, "gaslimit": gaslimit}
-        return HttpResponse(json.dumps(ret))
+@login_required
+def task_list(request):
+    username = request.user.username
+    now_user = db_helper.get_user(username)
+    user_type = now_user['type']
+    res = []
+    if username == 'admin':
+        tmp = db_helper.get_all()
     else:
-        return render(request, 'experiment_py.html')
+        tmp = db_helper.get_by_username(username)
+    for test in tmp:
+        test['id'] = test['_id']
+        test['startTime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(test['startTime']))
+        test['isOwner'] = True
+        res.append(test)
+    if username != 'admin':
+        for sub_user in now_user['subscribedUsers']:
+            sub_tmp = db_helper.get_by_username(sub_user)
+            for test in sub_tmp:
+                test['id'] = test['_id']
+                test['startTime'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(test['startTime']))
+                test['isOwner'] = username == 'admin'
+                res.append(test)
+
+    return render(request, 'list_py.html', {"user_type": user_type, "all_tests": res})
+
+
+@login_required
+def delete(request):
+    id = request.GET.get("id", None)
+    db_helper.delete(id)
+    return redirect(reverse('task_list'))
+
+
+@login_required
+def deal(request):
+    difficulties = []
+    gas_limits = []
+    difficulty = request.POST.get("Difficulty", None)
+    if difficulty != "":
+        difficulties.append(difficulty)
+    gas_limit = request.POST.get("gaslimit", None)
+    if gas_limit != "":
+        gas_limits.append(gas_limit)
+    client_type = request.POST.get("client_type", None)
+    node_count = int(request.POST.get("node_count", None))
+    miner_count = int(request.POST.get("miner_count", None))
+    if (len(difficulties) != 0):
+        data = dict()
+        data['difficulty'] = difficulties
+        data['gasLimit'] = gas_limits
+        data['nodeCount'] = node_count
+        data['startUpType'] = 'docker'
+        data['clientType'] = client_type
+        data['minerCount'] = miner_count
+        util.write_json('static/json/config.json', data)
+    return render(request, 'testConfig_py.html')
 
 
 def del_file(path):
@@ -389,42 +270,36 @@ def load(request):
     return response
 
 
-def download(request):
-    del_file('static/download')
-    if request.is_ajax():
-        urls = request.POST.get("urls", None)
-        name = request.POST.get("name", None)
-        urls = json.loads(urls)
-        for i in range(len(urls)):
-            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0;WOW64;rv:64.0) Gecko/20100101 Firefox/64.0'}
-            req = urllib.request.Request(url=urls[i], headers=headers)
-            data = urllib.request.urlopen(req).read()
-            with open("static/download/" + name + "_report" + str(i + 1) + ".jpg", "wb") as code:
-                code.write(data)
-            oldname = "static/json/report" + str(i) + ".json"
-            newname = "static/download/" + name + "_report" + str(i + 1) + ".json"
-            shutil.copyfile(oldname, newname)
-            with open("static/json/report" + str(i) + ".json", 'r') as load_data:
-                info = json.load(load_data)
-            datainfo = info[name]
-            all = datainfo
-            if name == "throughput":
-                name_attribute = ['Frequency', 'Throughput']
-            if name == "generalLatency":
-                name_attribute = ['Frequency', 'Latency']
-            if name == "txCompeltion":
-                name_attribute = ['Frequency', 'GasLimit', 'txCompletion']
-                all = []
-                for a in range(len(datainfo)):
-                    for b in range(11):
-                        all.append(datainfo[a][b])
-            if name == "detailedLatency":
-                name_attribute = ['Frequency', 'GasLimit', 'detailedLatency']
-                all = []
-                for a in range(len(datainfo)):
-                    for b in range(11):
-                        all.append(datainfo[a][b])
-            writerCSV = pd.DataFrame(columns=name_attribute, data=all)
-            writerCSV.to_csv('static/download/' + name + '_report' + str(i + 1) + '.csv', encoding='utf-8')
-        ret = {"res": 1}
-    return HttpResponse(json.dumps(ret))
+def login(request):
+    is_valid = auth.user_login(request)
+    if is_valid:
+        return redirect(reverse('task_list'))
+    else:
+        return render(request, 'login_py.html', {"err_msg": "Wrong username or password."})
+
+
+def signup(request):
+    if auth.sign_up(request):
+        return render(request, 'signup_py.html', {"err_msg": "Sign up success."})
+    else:
+        return render(request, 'signup_py.html', {"err_msg": "Sign up failed."})
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect(reverse('login_view'))
+
+
+def login_view(request):
+    return render(request, 'login_py.html')
+
+
+def signup_view(request):
+    return render(request, 'signup_py.html')
+
+
+@login_required
+def profile(request):
+    username = request.user.username
+    now_user = db_helper.get_user(username)
+    return render(request, 'profile_py.html', {'now_user': now_user})

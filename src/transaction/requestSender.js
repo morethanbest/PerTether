@@ -23,16 +23,14 @@ async function doTest(msg){
 async function runTest(nodeName, accounts, proxy, rate, duration, contractConfig, type, param) {
     try {
         winston.info(`${nodeName}: ${type} client ${nodeName} started. Rate ${rate}.`);
-        winston.info(contractConfig.abi);
         web3Proxy = new Web3(proxy);
         let promises = [];
-        winston.info(`${nodeName}: Unlock accounts for ${nodeName}.`);
         nodeAccounts = accounts;
         accounts.forEach((item, index) => {
             promises.push(web3Proxy.eth.personal.unlockAccount(item[0], item[1], 10000));
         });
         try {
-        await Promise.all(promises);
+            await Promise.all(promises);
         } catch (e) {
             winston.error(`Catch error unlockAccount: ${e.toString()}`);
         }
@@ -44,9 +42,6 @@ async function runTest(nodeName, accounts, proxy, rate, duration, contractConfig
         } catch (e) {
             winston.error(`Catch error sendRequests: ${e.toString()}`);
         }
-        // winston.info(`${nodeName}: Request rate ${rate}. Results ${JSON.stringify(results)}.`);
-        txNum = 0;
-        //todo 这里返回可以添加一个类型requestType判断，性能测试的请求为normal，异常请求为illegal，低性能为inefficient
         return {
             type: type,
             rate: rate,
@@ -69,9 +64,8 @@ async function sendRequests(startTime, nodeName, web3, rate, duration, address, 
     winston.info(`${nodeName}: sleep time ${sleepTime}`);
     while ((Date.now() - startTime)/1000 < duration){
         let account = getRandomAccount();
-        winston.info(`${nodeName}: Send ${type} TX workload param ${param === 'undefined' ? 'none' : param}`);
+        winston.info(`${nodeName}: Send ${type} TX workload param`);
         let workload = param === null ? workloadGeneration.run() : workloadGeneration.run(param);
-        // winston.info(`${nodeName}:Func ${workload.func}, Param ${workload.param}`);
         let func;
         for (let i = 0; i < abi.length; i++) {
             if (abi[i].name === workload.func) {
@@ -81,7 +75,6 @@ async function sendRequests(startTime, nodeName, web3, rate, duration, address, 
         }
         let gasprice = gasControl.getNumberInNormalDistribution(12, 4);
         while(gasprice <= 1) gasprice++;
-        // winston.info(`${nodeName}:Func ${func}, Param ${workload.param}`);
         promises.push(invoke.submitTransaction(nodeName, web3, address, func, account[0], account[1], gasprice, workload.param));
         txNum += 1;
         await rateControl(sleepTime / rateControlIndex, Date.now(), startTime);

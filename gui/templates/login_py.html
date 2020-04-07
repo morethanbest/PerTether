@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Ethereum Configuration</title>
+    <title>Login</title>
     <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
@@ -14,7 +14,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 		<script type="text/javascript" src="../static/scripts/jquery.min.js"></script>
 		<script src="../static/scripts/FileSaver.js"></script>
-
+            <script type="text/javascript" src="../static/scripts/ichart.1.2.1.min.js"></script>
   </head>
   <body class="h-100">
 
@@ -37,17 +37,24 @@
           </div>
           <div class="nav-wrapper">
             <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link " href="/experiment">
+
+              <li class="nav-item">
+                <a class="nav-link " href="#">
                   <i class="material-icons">table_chart</i>
-                  <span>Ethereum Configuration</span>
+                  <span>Introduction</span>
                 </a>
               </li>
                 <li class="nav-item">
-							  <a class="nav-link " href="/testConfig">
-							    <i class="material-icons">note_add</i>
-							    <span>Test Configuration</span>
-							  </a>
+                  <a class="nav-link " href="#">
+                    <i class="material-icons">note_add</i>
+                    <span>Login</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link " href="/signup">
+                    <i class="material-icons">note_add</i>
+                    <span>Sign up</span>
+                  </a>
                 </li>
             </ul>
           </div>
@@ -66,20 +73,21 @@
                   </div>
                   <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search"> </div>
               </form>
-              <ul class="navbar-nav border-left flex-row " style="float: right">
-                <li class="nav-item ">
-                  <a class="nav-link text-nowrap px-3" href="/list" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar  mr-2" src="../static/images/avatars/experiment.png" alt="User Avatar">
-                    <span class="d-none d-md-inline-block">Test List</span>
-                  </a>
+<!--              <ul class="navbar-nav border-left flex-row " style="float: right">
+                <li class="nav-item border-right dropdown notifications">
+                  <a class="nav-link text-nowrap px-3" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                      <img class="user-avatar  mr-2" src="images/avatars/file.png" alt="User Avatar">
+                      <span class="d-none d-md-inline-block">File</span>
+                    </a>
+                  </li>
                 </li>
                 <li class="nav-item ">
-                  <a class="nav-link text-nowrap px-3" href="/logout" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img class="user-avatar mr-2" src="../static/images/avatars/experiment.png" alt="User Avatar">
-                    <span class="d-none d-md-inline-block">Logout</span>
+                  <a class="nav-link text-nowrap px-3" href="experiment.html" role="button" aria-haspopup="true" aria-expanded="false">
+                    <img class="user-avatar  mr-2" src="images/avatars/experiment.png" alt="User Avatar">
+                    <span class="d-none d-md-inline-block">Experiment</span>
                   </a>
                 </li>
-              </ul>
+              </ul> -->
             </nav>
           </div>
           <!-- / .main-navbar -->
@@ -88,74 +96,53 @@
             <div class="page-header row no-gutters py-4 mb-3 border-bottom">
               <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
                 <!--<span class="text-uppercase page-subtitle">Overview</span>-->
-                <h3 class="page-title">Configuration</h3>
+                <h3 class="page-title">Login</h3>
                 <!--(Tips:If you enter multiple values, please separate them with spaces.)-->
               </div>
             </div>
             <!-- End Page Header -->
-              <div class="row">
-			  <div class="col-lg-12">
-                <div class="card card-small mb-4">
-                  <ul class="list-group list-group-flush">
-                    <li class="list-group-item p-3">
-                      <div class="row">
-                        <div class="col">
-                          <form name="input" action="/deal/" method="post">
-                              <div class="form-row">
-                                  <span><b>&nbsp;&nbsp;Difficulty</b></span>
-                              </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-12">
-                                <input type="text" class="form-control" name="Difficulty" id="Difficulty" placeholder="Difficulty" required="required">
-                              </div>
-                            </div>
-                              <div class="form-row">
-                                  <span><b>&nbsp;&nbsp;GasLimit</b></span>
-                              </div>
-                            <div class="form-row">
-                              <div class="form-group col-md-12">
-                                <input type="text" name="gaslimit" class="form-control" id="gaslimit" placeholder="GasLimit" required="required" >
-                              </div>
-                            </div>
-                              <div class="form-row">
-                                  <span><b>&nbsp;&nbsp;Node Count</b></span>
-                              </div>
-                              <div class="form-row">
-                                  <div class="form-group col-md-12">
-										<input type="number" name="node_count" class="form-control" id="node_count" placeholder="Node Count" value="4" required="required" readonly>
+              <div class="row" style="display: block">
+                  <div class="col-lg-12">
+                  <form name="input" action="/user_login/" method="post">
+                    <div class="card card-small mb-4">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item p-3">
+                          <div class="row">
+                            <div class="col">
+                                <div class="form-row">
+                                    <span><b style="color: darkred">&nbsp; {{ err_msg }}</b></span>
                                 </div>
-                              </div>
-                              <div class="form-row">
-                                  <span><b>&nbsp;&nbsp;Miner Count</b></span>
-                              </div>
-                              <div class="form-row">
+                                <br>
+                                  <div class="form-row">
+                                      <span><b>&nbsp; Username</b></span>
+                                  </div>
+                                <div class="form-row">
                                   <div class="form-group col-md-12">
-										<input type="number" name="miner_count" class="form-control" id="miner_count" placeholder="Miner Count" value="2" required="required" readonly>
+                                      <input type="text" name="username" min="2" class="form-control" id="username" placeholder="Username" required="required">
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="form-row"><span><b>&nbsp;&nbsp;Client Type</b></span></div>
-                              <div class="form-row">
+                                  <div class="form-row">
+                                      <span><b>&nbsp;&nbsp;Password</b></span>
+                                  </div>
+                                <div class="form-row">
                                   <div class="form-group col-md-12">
-                              	<select id="client_type" name="client_type" class="form-control" readonly>
-                              	  <option value="geth" selected>geth</option>
-                              	</select>
+                                      <input type="password" name="password" class="form-control" id="password" placeholder="Password" required="required">
+                                  </div>
                                 </div>
 
-                              </div>
-                              <button type='submit' id='nextbtn' class='btn btn-accent' style="width: 100px;float: right">Next</button>
-                          </form>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+                                  <button type='submit' id='nextbtn' class='btn btn-accent' style="width: 100px;float: right">Login</button>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </form>
+                  </div>
 
               </div>
-              <br>
             <!-- End Default Light Table -->
           </div>
-                       
+
 
           <footer class="main-footer d-flex bg-white border-top">
 

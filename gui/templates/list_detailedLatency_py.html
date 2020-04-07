@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Detailed Latency</title>
+    <title>Detailed Test Result</title>
     <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
@@ -12,217 +12,8 @@
     <link rel="stylesheet" id="main-stylesheet" data-version="1.1.0" href="../static/styles/shards-dashboards.1.1.0.min.css">
     <link rel="stylesheet" href="../static/styles/extras.1.1.0.min.css">
     <script type="text/javascript" src="../static/scripts/jquery.min.js"></script>
-    <script type="text/javascript" src="../static/scripts/ichart.1.2.1.min.js"></script>
-    <script type="text/javascript">
-      var existsArr={{ existsArr|safe }}
-      count=existsArr.length;
-      var difficulty={{ difficulty|safe }}
-      var blockGasLimit={{ gaslimit|safe }}
-      var allvalues={{ labelAll|safe }}
-      var alllabels={{ throughputAll|safe }}
-      var allvalues1={{ valueAll|safe }}
-      var allmax={{ maxAll|safe }}
-          var timeAll={{ timestampAll|safe }}
-       n=difficulty.length;
-       m=blockGasLimit.length;
-       num=n*m;
-       var imgurls=[];
-		$(function(){
-		    $("#info").append("<tr id='headinfo'></tr>");
-        $('#headinfo').append("<th>Index</th><th>Difficulty</th><th>GasLimit</th><th>State</th><th>Time</th>");
-        for(var i=0;i<count;i++){
-            $("#info").append("<tr id='infotr" + i + "'></tr>");
-            $("#infotr" + i + "").append("<td >"+(i+1)+"</td>");
-            $("#infotr" + i + "").append("<td >"+difficulty[i%n]+"</td>");
-            $("#infotr" + i + "").append("<td >"+blockGasLimit[Math.floor(i/n)]+"</td>");
-            if (existsArr[i]=="T" ){
-                $("#infotr" + i + "").append("<td ><button  class='btn btn-accent' style='width:100px;background:#228b22;border-color:#228b22;'>Tested</button></td>");
-            }
-            else if((existsArr[i-1]=="T" && existsArr[i]=="F" )||(i==0 &&existsArr[i]=="F")){
-                $("#infotr" + i + "").append("<td ><button  class='btn btn-accent' style='width:100px;'>Testing</button></td>");
-            }
-            else{
-                $("#infotr" + i + "").append("<td ><button  class='btn btn-accent' style='width:100px;background:#dcdcdc;border-color:#dcdcdc;'>Untest</button></td>");
-            }
-            $("#infotr" + i + "").append("<td >"+timeAll[i]+"</td>");
-        }
-		    for(var i=0;i<m;i++) {
-                $("#pic").append("<tr id='sec" + i + "'></tr>");
-                for (var j = 0; j < n; j++) {
-                    if (existsArr[i * n + j] == "T") {
-                        $("#sec" + i + "").append("<td><div id='canvasDiv" + (i * n + j) + "'style='display:inline; overflow-x:scroll; width:400px; height:400px;'></div></td>");
-                        var colors = ['#4572a7', '#aad0db', '#89a54e', '#80699b', '#92a8cd', '#db843d', '#aad0db', '#fad0db']
-                        var data = []
-                        for (var x = 0; x < alllabels[i * n + j].length; x++) {
-                            var jsonsstr = {
-                                name: 'Rate' + alllabels[i * n + j][x],
-                                value: allvalues1[i * n + j][x],
-                                color: colors[x % 8],
-                                line_width: 2
-                            }
-                            data.push(jsonsstr);
-                        }
+    <script type="text/javascript" src="../static/scripts/echarts.min.js"></script>
 
-                        var chart = new iChart.LineBasic2D({
-                            render: 'canvasDiv' + (i * n + j),
-                            data: data,
-                            width: 500,
-                            height: 400,
-                            title : {
-				        text:'detailedLatency with Different Frequencies when Difficulty='+difficulty[j]+', GasLimit='+blockGasLimit[i]+'',
-				        fontsize:12,
-				        color:'#000000'
-			            },
-			        subtitle : {
-                            fontsize:10,
-				        text:'x-coordinate: gaslimit|y-coordinate: detailedLatency',
-				        color:'#333333'
-			        },
-                            background_color: '#FEFEFE',
-                            tip: {
-                                enable: true,
-                                shadow: true,
-                                move_duration: 400,
-                                border: {
-                                    enable: true,
-                                    radius: 5,
-                                    width: 2,
-                                    color: '#3f8695'
-                                },
-                                listeners: {
-                                    //tip:提示框对象、name:数据名称、value:数据值、text:当前文本、i:数据点的索引
-                                    parseText: function (tip, name, value, text, i) {
-                                        return name + ":" + value;
-                                    }
-                                }
-                            },
-                            legend : {
-								enable : true,
-								row:1,//设置在一行上显示，与column配合使用
-								column : 'max',
-								valign:'top',
-								sign:'bar',
-								background_color:null,//设置透明背景
-								offsetx:-80,//设置x轴偏移，满足位置需要
-								border : true
-							},
-                            crosshair: {
-                                enable: true,
-                                line_color: '#62bce9'//十字线的颜色
-                            },
-                            sub_option: {
-                                label: false,
-                                point_size: 5
-                            },
-                            coordinate: {
-                                width: 340,
-                                height: 240,
-                                axis: {
-                                    color: '#dcdcdc',
-                                    width: 1
-                                },
-                                scale: [{
-                                    position: 'left',
-                                    start_scale: 0,
-                                    end_scale:300,
-                                    scale_space: 30,
-                                    scale_size: 2,
-                                    scale_color: '#9f9f9f'
-                                },
-
-                                    {
-                                        position: 'bottom',
-                                        labels: allvalues[i * n + j]
-                                    }],
-                            }
-                        });
-
-                        //开始画图
-                        chart.draw();
-                        imgurls.push(chart.toDataURL()) ;
-                    }
-                    else {
-
-                        $("#sec" + i + "").append("<td><div id='canvasDiv" + (i * n + j) + "'style='display:inline;'></div></td>");
-                    var data = [
-                        {
-                            name: 'Rate',
-                            value: [0,0,0,0],
-                            color: '#dcdcdc',
-                            line_width: 2
-                        }
-                    ];
-
-                    var chart = new iChart.LineBasic2D({
-                        render: 'canvasDiv' + (i * n + j),
-                        data: data,
-                        width: 500,
-                        height: 400,
-                        background_color: '#dcdddf',
-                        title : {
-				        text:'detailedLatency with Different Frequencies when Difficulty='+difficulty[j]+', GasLimit='+blockGasLimit[i]+'',
-				        fontsize:12,
-				        color:'#000000'
-			            },
-			        subtitle : {
-                            fontsize:10,
-				        text:'x-coordinate: gaslimit|y-coordinate: detailedLatency',
-				        color:'#333333'
-			        },
-                        crosshair: {
-                            enable: true,
-                            line_color: '#dcdcdc'//十字线的颜色
-                        },
-                        sub_option: {
-                            label: false,
-                            point_size: 10
-                        },
-                        coordinate: {
-                            width: 240,
-                            height: 240,
-                            axis: {
-                                color: '#dcdcdc',
-                                width: 1
-                            },
-                            scale: [{
-                                position: 'left',
-                                start_scale: 0,
-                                end_scale: 300,
-                                scale_space:  30,
-                                scale_size: 2,
-                                scale_color: '#9f9f9f'
-                            }, {
-                                position: 'bottom',
-                                labels: ['0gwei','2gwei','4gwei','8gwei']
-                            }]
-                        }
-
-                    });
-                    //利用自定义组件构造左侧说明文本
-                    //开始画图
-                    chart.draw();
-                    }
-                }
-            }
-            $("a[name='download']").click(function (e) {
-            {#alert(imgurls.length)#}
-            $.ajax({
-                url: "/download/",
-                type: "POST",
-                data: {
-                    'urls':JSON.stringify(imgurls),
-                    'name':"detailedLatency"
-                                },
-                traditional:true,
-                success: function (data) {
-                    window.location.href = "/load";
-                                    }
-
-                            })
-        });
-		});
-
-		</script>
   </head>
   <body class="h-100">
 
@@ -246,29 +37,11 @@
           <div class="nav-wrapper">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link " href="/throughput">
-                  <i class="material-icons">vertical_split</i>
-                  <span>Throughput</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/latency">
-                  <i class="material-icons">table_chart</i>
-                  <span>General Latency</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="/txCompletion">
+                <a class="nav-link " href="/list">
                   <i class="material-icons">note_add</i>
-                  <span>TX Completion</span>
+                  <span>Main Page</span>
                 </a>
               </li>
-							<li class="nav-item">
-							  <a class="nav-link " href="/detailedLatency">
-							    <i class="material-icons">view_module</i>
-							    <span>Detailed Latency</span>
-							  </a>
-							</li>
             </ul>
           </div>
         </aside>
@@ -288,9 +61,9 @@
               </form>
               <ul class="navbar-nav border-left flex-row " style="float: right">
                 <li class="nav-item border-right dropdown notifications">
-                  <a name="download" class="nav-link text-nowrap px-3" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                  <a name="download" class="nav-link text-nowrap px-3" href="/detailedResult/?id={{ test.id }}&type={{ next_type }}" role="button" aria-haspopup="true" aria-expanded="false">
                       <img class="user-avatar  mr-2" src="../static/images/avatars/download.png" alt="User Avatar">
-                      <span class="d-none d-md-inline-block">Download</span>
+                      <span class="d-none d-md-inline-block">{{ next_type|title }} Result</span>
                     </a>
                   </li>
                 </li>
@@ -298,6 +71,12 @@
                   <a class="nav-link text-nowrap px-3" href="/experiment" role="button" aria-haspopup="true" aria-expanded="false">
                     <img class="user-avatar  mr-2" src="../static/images/avatars/experiment.png" alt="User Avatar">
                     <span class="d-none d-md-inline-block">Configuration</span>
+                  </a>
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link text-nowrap px-3" href="/logout" role="button" aria-haspopup="true" aria-expanded="false">
+                    <img class="user-avatar mr-2" src="../static/images/avatars/experiment.png" alt="User Avatar">
+                    <span class="d-none d-md-inline-block">Logout</span>
                   </a>
                 </li>
               </ul>
@@ -313,23 +92,111 @@
               </div>
             </div>
             <!-- End Page Header -->
-              <div class="row">
-                  <div class="col-lg-12" style="text-align: justify; ">
-					<table id="info" class="table mb-0" >
+           <div class="col-lg-12">
+               <div class="card card-small mb-4">
 
-                    </table>
-              </div>
-              </div>
-              <div class="row">
-                  <div class="col-lg-12" style="text-align: center;">
-					<table id="pic" class="table mb-0">
-                    </table>
-              </div>
-              </div>
+                   <div class="row">
+                       <div class="col-lg-12" style="text-align: center; ">
+                           <table id="info" class="table mb-0" >
+                               <thead style="font-weight: bold;">
+                               <tr>
+                                   <td style="vertical-align: middle;" rowspan="2">Period</td>
+                                   <td style="vertical-align: middle;" rowspan="2">From</td>
+                                   <td style="vertical-align: middle;" rowspan="2">To</td>
+                                   <td colspan="2">Throughput</td>
+                                   <td colspan="2">Latency</td>
+                                   <td colspan="2">Success Rate</td>
+                               </tr>
+                               <tr>
+                                   <td>Mean</td>
+                                   <td>Median</td>
+                                   <td>Mean</td>
+                                   <td>Median</td>
+                                   <td>Mean</td>
+                                   <td>Median</td>
+                               </tr>
+                               </thead>
+                               <tr>
+                                   <td>whole process</td>
+                                   <td>0</td>
+                                   <td>{{ test.duration }}</td>
+                                   <td>{{ total_metrics.0 }}</td>
+                                   <td>{{ total_metrics.3 }}</td>
+                                   <td>{{ total_metrics.1 }}</td>
+                                   <td>{{ total_metrics.4 }}</td>
+                                   <td>{{ total_metrics.2 }}</td>
+                                   <td>{{ total_metrics.5 }}</td>
+                               </tr>
+                               <tr>
+                                   <td style="color: green">before failure</td>
+                                   <td>0</td>
+                                   <td>{{ before }}</td>
+                                   <td>{{ before_metrics.0 }}</td>
+                                   <td>{{ before_metrics.3 }}</td>
+                                   <td>{{ before_metrics.1 }}</td>
+                                   <td>{{ before_metrics.4 }}</td>
+                                   <td>{{ before_metrics.2 }}</td>
+                                   <td>{{ before_metrics.5 }}</td>
+                               </tr>
+                               {% for f in failure_metrics %}
+                                   <tr>
+                                   <td style="color: red">{{ f.label }}</td>
+                                   <td>{{ f.start }}</td>
+                                   <td>{{ f.finish }}</td>
+                                   <td>{{ f.metrics.0 }}</td>
+                                   <td>{{ f.metrics.3 }}</td>
+                                   <td>{{ f.metrics.1 }}</td>
+                                   <td>{{ f.metrics.4 }}</td>
+                                   <td>{{ f.metrics.2 }}</td>
+                                   <td>{{ f.metrics.5 }}</td>
+                                   </tr>
+                               {% endfor %}
+                               <tr>
+                                   <td style="color: orangered">after failure</td>
+                                   <td>{{ after }}</td>
+                                   <td>{{ test.duration }}</td>
+                                   <td>{{ after_metrics.0 }}</td>
+                                   <td>{{ after_metrics.3 }}</td>
+                                   <td>{{ after_metrics.1 }}</td>
+                                   <td>{{ after_metrics.4 }}</td>
+                                   <td>{{ after_metrics.2 }}</td>
+                                   <td>{{ after_metrics.5 }}</td>
+                               </tr>
+                           </table>
+                       </div>
+                   </div>
+               </div>
+           </div>
+            <div class="col-lg-12">
+              <div class="card card-small mb-4">
+                  <div class="row">
+                      <div id="throughput" class="col-lg-12" style="height: 400px">
 
+                      </div>
+                  </div>
+
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="card card-small mb-4">
+                  <div class="row">
+                      <div id="latency" class="col-lg-12" style="height: 400px">
+
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="card card-small mb-4">
+                  <div class="row">
+                      <div id="successRate" class="col-lg-12" style="height: 400px">
+
+                      </div>
+                  </div>
+              </div>
+            </div>
             </div>
             <!-- End Default Light Table -->
-          </div>
 
 
           <footer class="main-footer d-flex bg-white border-top">
@@ -339,7 +206,238 @@
         </main>
       </div>
     </div>
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('throughput'));
+            option = {
+                dataset: {
+                dimensions: [
+                    {name: 'time', type: 'int'},
+                    {name: 'throughput', type: 'int'},
+                ],
+                source: {{ test.result.throughput }}
+            },
+            title: {
+                text: 'Throughput',
+                subtext: 'in seconds'
+            },
+            color: 'green',
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis:  {
+                type: 'value',
+                interval: 60
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} tx'
+                },
+                axisPointer: {
+                    snap: true
+                },
+                max: 'dataMax'
+            },
+            series: [
+                {
+                    name:'throughput',
+                    type:'line',
+                    smooth: true,
+                    encode: {
+                        // 将 "amount" 列映射到 X 轴。
+                        x: 'time',
+                        // 将 "product" 列映射到 Y 轴。
+                        y: 'throughput'
+                    },
+                    markArea: {
+                        label:{
+                            color: 'red'
+                        },
+                        itemStyle: {
+                            color: 'red',
+                            opacity: 0.35,
+                        },
+                        data: [
+                            {% for f in test.failure %}
+                            [{
+                            name: '{{ f.label }}',
+                            xAxis: {{ f.startAfter }},
+                            yAxis: 'max'
+                        }, {
+                            xAxis: {{ f.startAfter|add:f.duration }},
+                            yAxis: 'min'
+                        }],
+                            {% endfor %}
+                        ]
+                    }
+                }
+            ]
+        };
+     myChart.setOption(option);
 
+     var myLChart = echarts.init(document.getElementById('latency'));
+            lOption = {
+                dataset: {
+                dimensions: [
+                    {name: 'time', type: 'int'},
+                    {name: 'latency', type: 'int'},
+                ],
+                source: {{ test.result.latency }}
+            },
+            title: {
+                text: 'Latency',
+                subtext: 'in seconds'
+            },
+            color: 'blue',
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis:  {
+                type: 'value',
+                interval: 60
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} ms'
+                },
+                axisPointer: {
+                    snap: true
+                },
+                max: 'dataMax'
+            },
+            series: [
+                {
+                    name:'latency',
+                    type:'line',
+                    smooth: true,
+                    encode: {
+                        // 将 "amount" 列映射到 X 轴。
+                        x: 'time',
+                        // 将 "product" 列映射到 Y 轴。
+                        y: 'latency'
+                    },
+                    markArea: {
+                        label:{
+                            color: 'red'
+                        },
+                        itemStyle: {
+                            color: 'red',
+                            opacity: 0.35,
+                        },
+                        data: [
+                            {% for f in test.failure %}
+                            [{
+                            name: '{{ f.label }}',
+                            xAxis: {{ f.startAfter }},
+                            yAxis: 'max'
+                        }, {
+                            xAxis: {{ f.startAfter|add:f.duration }},
+                            yAxis: 'min'
+                        }],
+                            {% endfor %}
+                        ]
+                    }
+                }
+            ]
+        };
+     myLChart.setOption(lOption);
+
+     var mySChart = echarts.init(document.getElementById('successRate'));
+            sOption = {
+                dataset: {
+                dimensions: [
+                    {name: 'time', type: 'int'},
+                    {name: 'success rate', type: 'float'},
+                ],
+                source: {{ test.result.success_rate }}
+            },
+            title: {
+                text: 'Success Rate',
+                subtext: 'in seconds'
+            },
+            color: 'red',
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis:  {
+                type: 'value',
+                interval: 60
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}'
+                },
+                axisPointer: {
+                    snap: true
+                },
+                max: 1
+            },
+            series: [
+                {
+                    name:'success rate',
+                    type:'line',
+                    smooth: true,
+                    encode: {
+                        // 将 "amount" 列映射到 X 轴。
+                        x: 'time',
+                        // 将 "product" 列映射到 Y 轴。
+                        y: 'latency'
+                    },
+                    markArea: {
+                        label:{
+                            color: 'red'
+                        },
+                        itemStyle: {
+                            color: 'red',
+                            opacity: 0.35,
+                        },
+                        data: [
+                            {% for f in test.failure %}
+                            [{
+                            name: '{{ f.label }}',
+                            xAxis: {{ f.startAfter }},
+                            yAxis: 1
+                        }, {
+                            xAxis: {{ f.startAfter|add:f.duration }},
+                            yAxis: 'min'
+                        }],
+                            {% endfor %}
+                        ]
+                    }
+                }
+            ]
+        };
+        mySChart.setOption(sOption);
+    </script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
