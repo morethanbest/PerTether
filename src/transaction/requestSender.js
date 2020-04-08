@@ -12,6 +12,7 @@ const rootDir = path.join('..', '..');
 let web3Proxy;
 let nodeAccounts;
 let txNum = 0;
+let last_requestTime;
 
 let rateControlIndex = 1;
 
@@ -64,7 +65,7 @@ async function sendRequests(startTime, nodeName, web3, rate, duration, address, 
     winston.info(`${nodeName}: sleep time ${sleepTime}`);
     while ((Date.now() - startTime)/1000 < duration){
         let account = getRandomAccount();
-        winston.info(`${nodeName}: Send ${type} TX workload param`);
+        winston.info(`${new Date()} ${nodeName}: Send ${type} TX workload param`);
         let workload = param === null ? workloadGeneration.run() : workloadGeneration.run(param);
         let func;
         for (let i = 0; i < abi.length; i++) {
@@ -77,14 +78,15 @@ async function sendRequests(startTime, nodeName, web3, rate, duration, address, 
         while(gasprice <= 1) gasprice++;
         promises.push(invoke.submitTransaction(nodeName, web3, address, func, account[0], account[1], gasprice, workload.param));
         txNum += 1;
+        last_requestTime = Date.now();
         await rateControl(sleepTime / rateControlIndex, Date.now(), startTime);
     }
     return await Promise.all(promises);
 }
 
-async function rateControl(sleepTime, nowDate, startTime) {
-    let diff = txNum * sleepTime - (nowDate - startTime);
-    if( diff > 5) {
+async function rateControl(sleepTime) {
+    let diff = Date.now() + sleepTime - last_requestTime;
+    if( diff > 10) {
         return util.sleep(diff);
     }
     else {
