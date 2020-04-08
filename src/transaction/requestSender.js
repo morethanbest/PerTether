@@ -57,7 +57,7 @@ async function runTest(nodeName, accounts, proxy, rate, duration, contractConfig
 }
 
 async function sendRequests(startTime, nodeName, web3, rate, duration, address, abi, contractWorkloadPath, type, param) {
-    winston.info(`${nodeName}: start time ${startTime}`);
+    winston.info(`${nodeName}: start time ${new Date()}`);
     const workloadGeneration = require(path.join(rootDir, contractWorkloadPath));
     let promises = [];
     let sleepTime = 1000 / rate;

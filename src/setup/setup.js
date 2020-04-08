@@ -47,7 +47,7 @@ module.exports.stopTestChain = async function stopTestChain(client) {
 
 
 module.exports.writeGenesis = function (client, difficulty, gasLimit, nodeCount) {
-    if (client === 'Geth') {
+    if (client === 'geth') {
         let genesis = require(path.join(__dirname, '../../config/geth/genesis.json'));
         genesis.difficulty = difficulty;
         genesis.gasLimit = gasLimit.toString();
