@@ -65,7 +65,7 @@ async function run(configFile, resultPath) {
     let minerCount = absConfigObject.minerCount;
     let loadConfig = absConfigObject.loadConfig;
 
-    if(minerCount === 'undefined')
+    if(typeof minerCount === 'undefined')
         minerCount = 1;
     for (let i = 0; i < configNodeCount; i++) {
         fs1.copyFileSync('config/geth/start_geth_common.sh', `src/setup/geth/docker/tmp/node${i}/work/start_geth.sh`);
@@ -116,10 +116,13 @@ async function run(configFile, resultPath) {
                 failureInfo: null
             };
             let results = [];
-            failureManager.initFailures(configObject.nodes, clientType, account.getAccounts(),
-                eachClientRate, contract.getContractConfig(smartContract), failureConfigObject.failure, results);
-            failureManager.startFailureTimer();
-            load.startLoadTimer(loadConfig);
+            if (typeof loadConfig === 'undefined') {
+                failureManager.initFailures(configObject.nodes, clientType, account.getAccounts(),
+                    eachClientRate, contract.getContractConfig(smartContract), failureConfigObject.failure, results);
+                failureManager.startFailureTimer();
+            }
+            else
+                load.startLoadTimer(loadConfig);
             await client.startTest(configObject.nodes, account.getAccounts(), eachClientRate, duration, contract.getContractConfig(smartContract), results);
             let data = dataAnalysis.processResult(results, rate, duration);
             winston.info(`Result rate ${eachClientRate * nodeCount} ${data}`);
@@ -136,7 +139,7 @@ async function run(configFile, resultPath) {
             if (stopStatus !== 0)
                 winston.error('Docker stopped failed. Please stop manually.');
             let finalResultStr = JSON.stringify(finalResult);
-            if (resultPath !== 'undefined')
+            if (typeof resultPath !== 'undefined')
                 fs1.writeFileSync(path.join(resultPath, `report${chainCount}.json`), finalResultStr);
             chainCount ++;
         }
