@@ -42,10 +42,12 @@ def get_mean_by_period(data, start, finish):
     tmp = np.array(data)
     x = tmp[:, 0]
     y = tmp[:, 1]
+    print(start, finish)
     start = np.where(x >= start)[0][0]
+    if finish >= len(data):
+        finish = -1
     if finish != -1:
         finish = np.where(x >= finish)[0][0]
-    print(start, finish)
     limit = y[start:finish]
     print(limit)
     mean = np.mean(limit)
@@ -57,6 +59,8 @@ def get_median_by_period(data, start, finish):
     x = tmp[:, 0]
     y = tmp[:, 1]
     start = np.where(x >= start)[0][0]
+    if finish >= len(data):
+        finish = -1
     if finish != -1:
         finish = np.where(x >= finish)[0][0]
     limit = y[start:finish]

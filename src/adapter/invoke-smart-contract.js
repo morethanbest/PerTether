@@ -31,7 +31,7 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
         winston.info(`${nodeName}: TX confirmed number ======> ${JSON.stringify(receipt.blockNumber)}`);
     }).on('error', function (error) {
         isTimeout = false;
-        winston.error(`${nodeName}: TX error ${error}`);
+        winston.error(`${nodeName}: TX error`);
     }).then(function (receipt) {
         return Promise.resolve(result);
     }, function (error) {

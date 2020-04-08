@@ -127,6 +127,7 @@
                                    <td>{{ total_metrics.2 }}</td>
                                    <td>{{ total_metrics.5 }}</td>
                                </tr>
+                           {% if before %}
                                <tr>
                                    <td style="color: green">before failure</td>
                                    <td>0</td>
@@ -162,6 +163,23 @@
                                    <td>{{ after_metrics.2 }}</td>
                                    <td>{{ after_metrics.5 }}</td>
                                </tr>
+                           {% endif %}
+                           {% if period_metrics %}
+                               {% for p in period_metrics %}
+                                   <tr>
+                                   <td style="color: orangered">period {{  forloop.counter }} </td>
+                                   <td>{% widthratio forloop.counter0 1 test.loadConfig.period  %}</td>
+                                   <td>{% widthratio forloop.counter 1 test.loadConfig.period  %}</td>
+                                   <td>{{ p.0 }}</td>
+                                   <td>{{ p.3 }}</td>
+                                   <td>{{ p.1 }}</td>
+                                   <td>{{ p.4 }}</td>
+                                   <td>{{ p.2 }}</td>
+                                   <td>{{ p.5 }}</td>
+                               </tr>
+                               {% endfor %}
+
+                           {% endif %}
                            </table>
                        </div>
                    </div>
@@ -186,6 +204,7 @@
                   </div>
               </div>
             </div>
+          {% if before %}
             <div class="col-lg-12">
               <div class="card card-small mb-4">
                   <div class="row">
@@ -196,6 +215,7 @@
               </div>
             </div>
             </div>
+        {% endif %}
             <!-- End Default Light Table -->
 
 
@@ -360,7 +380,7 @@
             ]
         };
      myLChart.setOption(lOption);
-
+{% if before %}
      var mySChart = echarts.init(document.getElementById('successRate'));
             sOption = {
                 dataset: {
@@ -437,6 +457,7 @@
             ]
         };
         mySChart.setOption(sOption);
+        {% endif %}
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

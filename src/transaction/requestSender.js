@@ -113,7 +113,7 @@ process.on('message', async (message) => {
                 break;
             }
             case 'rateControl': {
-                winston.info(`Change the request rate coefficient from ${rateControlIndex} to ${message.rateControlIndex}`);
+                winston.info(`Time ${new Date()} rate coefficient from ${rateControlIndex} to ${message.rateControlIndex}`);
                 rateControlIndex = message.rateControlIndex;
                 break;
             }

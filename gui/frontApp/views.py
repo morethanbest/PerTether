@@ -113,70 +113,106 @@ def detailed_result(request):
         id = request.GET.get("id", None)
         show_type = request.GET.get('type', 'smooth')
     data = db_helper.get_one(id)
-    failure, duration, request_rate = data['failure'], data['duration'], data['startTps']
+    duration, request_rate = data['duration'], data['startTps']
     mean, interval = 7, int(duration / 50)
     if show_type == 'raw':
         mean, interval = math.ceil(duration / 300) * 2 - 1, int(duration / 300)
         next_type = 'smooth'
     data['id'] = id
-    data['result']['throughput'] = data_process.proc_data(data['result']['throughput'], mean, interval)
-    data['result']['latency'] = data_process.proc_data(data['result']['latency'], mean, interval)
-    data['result']['success_rate'] = data_process.success_rate(request_rate, data['result']['throughput'])
-    total_mean_throughput = data_process.get_mean_by_period(data['result']['throughput'], 0, -1)
-    total_mean_latency = data_process.get_mean_by_period(data['result']['latency'], 0, -1)
-    total_mean_success_rate = data_process.get_mean_by_period(data['result']['success_rate'], 0, -1)
-    total_median_throughput = data_process.get_median_by_period(data['result']['throughput'], 0, -1)
-    total_median_latency = data_process.get_median_by_period(data['result']['latency'], 0, -1)
-    total_median_success_rate = data_process.get_median_by_period(data['result']['success_rate'], 0, -1)
-    
-    failure_metrics = []
-    before, after = sys.maxsize, 0
-    for f in failure:
-        f_s = f['startAfter']
-        f_f = f_s + f['duration']
-        before = min(before, f_s)
-        after = max(after, f_f)
-        f_tmp = {
-            'label': f['label'],
-            'type': f['type'],
-            'level': f['level'],
-            'start': f_s,
-            'finish': f_f
-        }
-        f_mean_t = data_process.get_mean_by_period(data['result']['throughput'], f_s, f_f)
-        f_mean_l = data_process.get_mean_by_period(data['result']['latency'], f_s, f_f)
-        f_mean_s = data_process.get_mean_by_period(data['result']['success_rate'], f_s, f_f)
-        f_median_t = data_process.get_median_by_period(data['result']['throughput'], f_s, f_f)
-        f_median_l = data_process.get_median_by_period(data['result']['latency'], f_s, f_f)
-        f_median_s = data_process.get_median_by_period(data['result']['success_rate'], f_s, f_f)
-        f_tmp['metrics'] = [f_mean_t, f_mean_l, f_mean_s, f_median_t, f_median_l, f_median_s]
-        failure_metrics.append(f_tmp)
+    raw_throughput = data_process.proc_data(data['result']['throughput'], 1, 1)
+    raw_latency = data_process.proc_data(data['result']['latency'], 1, 1)
+    raw_succ = data_process.success_rate(request_rate, data['result']['throughput'])
+    smooth_throughput = data_process.proc_data(data['result']['throughput'], mean, interval)
+    smooth_latency = data_process.proc_data(data['result']['latency'], mean, interval)
+    smooth_success_rate = data_process.success_rate(request_rate, smooth_throughput)
+    total_mean_throughput = data_process.get_mean_by_period(raw_throughput, 0, -1)
+    total_mean_latency = data_process.get_mean_by_period(raw_latency, 0, -1)
+    total_mean_success_rate = data_process.get_mean_by_period(raw_succ, 0, -1)
+    total_median_throughput = data_process.get_median_by_period(raw_throughput, 0, -1)
+    total_median_latency = data_process.get_median_by_period(raw_latency, 0, -1)
+    total_median_success_rate = data_process.get_median_by_period(raw_succ, 0, -1)
 
-    before_mean_throughput = data_process.get_mean_by_period(data['result']['throughput'], 0, before)
-    before_mean_latency = data_process.get_mean_by_period(data['result']['latency'], 0, before)
-    before_mean_success_rate = data_process.get_mean_by_period(data['result']['success_rate'], 0, before)
-    before_median_throughput = data_process.get_median_by_period(data['result']['throughput'], 0, before)
-    before_median_latency = data_process.get_median_by_period(data['result']['latency'], 0, before)
-    before_median_success_rate = data_process.get_median_by_period(data['result']['success_rate'], 0, before)
+    res = {
+        'test': data, 'next_type': next_type,
+        'total_metrics': [
+            total_mean_throughput, total_mean_latency, total_mean_success_rate,
+            total_median_throughput, total_median_latency, total_median_success_rate
+        ]
+    }
+    if 'failure' in data:
+        failure = data['failure']
+        failure_metrics = []
+        before, after = sys.maxsize, 0
+        for f in failure:
+            f_s = f['startAfter']
+            f_f = f_s + f['duration']
+            before = min(before, f_s)
+            after = max(after, f_f)
+            f_tmp = {
+                'label': f['label'],
+                'type': f['type'],
+                'level': f['level'],
+                'start': f_s,
+                'finish': f_f
+            }
+            f_mean_t = data_process.get_mean_by_period(raw_throughput, f_s, f_f)
+            f_mean_l = data_process.get_mean_by_period(raw_latency, f_s, f_f)
+            f_mean_s = data_process.get_mean_by_period(raw_succ, f_s, f_f)
+            f_median_t = data_process.get_median_by_period(raw_throughput, f_s, f_f)
+            f_median_l = data_process.get_median_by_period(raw_latency, f_s, f_f)
+            f_median_s = data_process.get_median_by_period(raw_succ, f_s, f_f)
+            f_tmp['metrics'] = [f_mean_t, f_mean_l, f_mean_s, f_median_t, f_median_l, f_median_s]
+            failure_metrics.append(f_tmp)
 
-    after_mean_throughput = data_process.get_mean_by_period(data['result']['throughput'], after, -1)
-    after_mean_latency = data_process.get_mean_by_period(data['result']['latency'], after, -1)
-    after_mean_success_rate = data_process.get_mean_by_period(data['result']['success_rate'], after, -1)
-    after_median_throughput = data_process.get_median_by_period(data['result']['throughput'], after, -1)
-    after_median_latency = data_process.get_median_by_period(data['result']['latency'], after, -1)
-    after_median_success_rate = data_process.get_median_by_period(data['result']['success_rate'], after, -1)
+        before_mean_throughput = data_process.get_mean_by_period(raw_throughput, 0, before)
+        before_mean_latency = data_process.get_mean_by_period(raw_latency, 0, before)
+        before_mean_success_rate = data_process.get_mean_by_period(raw_succ, 0, before)
+        before_median_throughput = data_process.get_median_by_period(raw_throughput, 0, before)
+        before_median_latency = data_process.get_median_by_period(raw_latency, 0, before)
+        before_median_success_rate = data_process.get_median_by_period(raw_succ, 0, before)
 
-    return render(request, 'list_detailedLatency_py.html', {'test': data, 'next_type': next_type, 'before': before,
-    'after': after, 'total_metrics': [
-        total_mean_throughput, total_mean_latency, total_mean_success_rate,
-        total_median_throughput, total_median_latency, total_median_success_rate
-    ], 'before_metrics': [
-        before_mean_throughput, before_mean_latency, before_mean_success_rate,
-        before_median_throughput, before_median_latency, before_median_success_rate
-    ], 'after_metrics': [
-        after_mean_throughput, after_mean_latency, after_mean_success_rate,
-        after_median_throughput, after_median_latency, after_median_success_rate
-    ], 'failure_metrics': failure_metrics})
+        after_mean_throughput = data_process.get_mean_by_period(raw_throughput, after, -1)
+        after_mean_latency = data_process.get_mean_by_period(raw_latency, after, -1)
+        after_mean_success_rate = data_process.get_mean_by_period(raw_succ, after, -1)
+        after_median_throughput = data_process.get_median_by_period(raw_throughput, after, -1)
+        after_median_latency = data_process.get_median_by_period(raw_latency, after, -1)
+        after_median_success_rate = data_process.get_median_by_period(raw_succ, after, -1)
+        
+        res['before'] = before
+        res['before_metrics'] = [
+            before_mean_throughput, before_mean_latency, before_mean_success_rate,
+            before_median_throughput, before_median_latency, before_median_success_rate
+        ]
+        res['after'] = after
+        res['after_metrics'] = [
+            after_mean_throughput, after_mean_latency, after_mean_success_rate,
+            after_median_throughput, after_median_latency, after_median_success_rate
+        ]
+        res['failure_metrics'] = failure_metrics
+    if 'loadConfig' in data:
+        load_config = data['loadConfig']
+        period = load_config['period']
+        double_times = load_config['doubleTimes']
+        period_result = []
+        for i in range(double_times):
+            period_start = period * i
+            period_finish = period_start + period
+            period_mean_throughput = data_process.get_mean_by_period(raw_throughput, period_start, period_finish)
+            period_mean_latency = data_process.get_mean_by_period(raw_latency, period_start, period_finish)
+            period_mean_success_rate = data_process.get_mean_by_period(raw_succ, period_start, period_finish)
+            period_median_throughput = data_process.get_median_by_period(raw_throughput, period_start, period_finish)
+            period_median_latency = data_process.get_median_by_period(raw_latency, period_start, period_finish)
+            period_median_success_rate = data_process.get_median_by_period(raw_succ, period_start, period_finish)
+            period_result.append([
+                period_mean_throughput, period_mean_latency, period_mean_success_rate,
+                period_median_throughput, period_median_latency, period_median_success_rate
+            ])
+        res['period_metrics'] = period_result
+
+    data['result']['throughput'] = smooth_throughput
+    data['result']['latency'] = smooth_latency
+    data['result']['success_rate'] = smooth_success_rate
+    return render(request, 'list_detailedLatency_py.html', res)
 
 
 @login_required

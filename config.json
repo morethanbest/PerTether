@@ -10,7 +10,7 @@
     "smartContract": "HelloWorld",
 	"loadConfig": {
 		"period": 100,
-		"doubleTimes": 6
+		"doubleTimes": 7
 	},
 	"failures": [
 		{
