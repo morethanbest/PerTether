@@ -67,7 +67,6 @@ async function sendRequests(startTime, nodeName, web3, rate, duration, address, 
         let account = getRandomAccount();
         winston.info(`${new Date()} ${nodeName}: Send ${type} TX workload param ${param}`);
         let workload = param === null ? workloadGeneration.run() : workloadGeneration.run(param);
-        winston.info(`Workload ${JSON.stringify(workload)} Address ${address}`);
         let func;
         for (let i = 0; i < abi.length; i++) {
             if (abi[i].name === workload.func) {
@@ -75,7 +74,6 @@ async function sendRequests(startTime, nodeName, web3, rate, duration, address, 
                 break;
             }
         }
-        winston.info(`Failure Function ${JSON.stringify(func)}`);
         let gasprice = gasControl.getNumberInNormalDistribution(12, 4);
         while(gasprice <= 1) gasprice++;
         promises.push(invoke.submitTransaction(nodeName, web3, address, func, account[0], account[1], gasprice, workload.param));
