@@ -13,14 +13,14 @@ contract BadPerformance {
     }
     // Level 2 100 loops
     function badPerfLevel2(string arg0, uint arg1) public {
-        for (uint p = 0; p < 10000; p++) {
+        for (uint p = 0; p < 1000; p++) {
             map0[arg0] = arg1 + p;
             map1[arg0] = map0[arg0] + p;
         }
     }
     // Level 3 1000 loops
     function badPerfLevel3(string arg0, uint arg1) public {
-        for (uint p = 0; p < 10000000; p++) {
+        for (uint p = 0; p < 10000; p++) {
             map0[arg0] = arg1 + p;
             map1[arg0] = map0[arg0] + p;
         }
