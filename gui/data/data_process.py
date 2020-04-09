@@ -17,13 +17,6 @@ def proc_data(data, mean, interval):
         res.append(int(y[i]))
     y = signal.medfilt(res, mean)
     x, y = x[0::interval], y[0::interval]
-    for i in range(1, len(x) - 1):
-        if x[i] == 0:
-            if x[i - 1] != 0 and x[i + 1] != 0:
-                x[i] = (x[i - 1] + x[i + 1]) / 2
-        if y[i] == 0:
-            if y[i - 1] != 0 and y[i + 1] != 0:
-                y[i] = (y[i - 1] + y[i + 1]) / 2
     d = np.dstack((x, y))
     return d[0].tolist()
 

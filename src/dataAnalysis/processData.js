@@ -7,7 +7,7 @@ function processResult(result, rate, duration){
     let txSuccess = 0;
     let txTotal = 0;
     let latencyTotal = 0;
-    let recDuration = duration * 3;
+    let recDuration = duration;
     let durationMs = duration * 1000;
     let maxGasprice = 20;
     let gasCompletion = [];
@@ -24,7 +24,10 @@ function processResult(result, rate, duration){
         throughputBySec.push([i, 0]);
         latencyBySec.push([i, 0]);
     }
-    let startTime = result[0].startTime;
+    let startTime = Number.MAX_SAFE_INTEGER;
+    for (let i = 0; i < result.length; i++) {
+        startTime = Math.min(startTime, result[i].startTime)
+    }
     for(let i = 0; i < result.length; i++){
         winston.info(`Process type ${result[i].type} node ${result[i].node} `);
         let res = result[i].result;
