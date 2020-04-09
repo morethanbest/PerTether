@@ -65,7 +65,7 @@ async function sendRequests(startTime, nodeName, web3, rate, duration, address, 
     winston.info(`${nodeName}: sleep time ${sleepTime}`);
     while ((Date.now() - startTime)/1000 < duration){
         let account = getRandomAccount();
-        winston.info(`${new Date()} ${nodeName}: Send ${type} TX workload param`);
+        winston.info(`${new Date()} ${nodeName}: Send ${type} TX workload param ${param}`);
         let workload = param === null ? workloadGeneration.run() : workloadGeneration.run(param);
         let func;
         for (let i = 0; i < abi.length; i++) {
