@@ -50,8 +50,8 @@ async function injectFailure(failure) {
             failure.status = 'stopped';
             break;
         case 'smartContract':
-            clientControl.controlRateIndex(0.5);
-            failureClient.controlRateIndex(0.5, failure.label);
+            clientControl.controlRateIndex(0.2);
+            failureClient.controlRateIndex(0.8, failure.label);
             await failureClient.startFailure(nodeConfig, nodeAccounts, rate, failure.type, failure.duration,
                 contract.getContractConfig(failure.contractName), results, failure.label, failure.level);
             failure.finishTime = Date.now();

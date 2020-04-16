@@ -45,7 +45,7 @@ module.exports.submitTransaction = async function (nodeName, web3, address, abi,
                 result.latency = result.finishTime - result.startTime;
                 resolve(result);
             }
-        }, 300000);
+        }, 120000);
     });
     return await Promise.race([send, timeout]);
 };
