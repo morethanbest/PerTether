@@ -36,12 +36,12 @@ module.exports.startTestChain = async function startTestChain(client) {
 
 
 module.exports.stopTestChain = async function stopTestChain(client) {
-    winston.info(`Stop test blockchain, client type: ${client} ...`);
-    if (client === 'geth') {
-        let result = await dockerCompose.down({cwd: path.join(__dirname, client, 'docker'), log: true});
-        return result.exitCode;
-    }
-    winston.error(`No ${client} client supported.`);
+    // winston.info(`Stop test blockchain, client type: ${client} ...`);
+    // if (client === 'geth') {
+    //     let result = await dockerCompose.down({cwd: path.join(__dirname, client, 'docker'), log: true});
+    //     return result.exitCode;
+    // }
+    // winston.error(`No ${client} client supported.`);
     return 1;
 };
 
